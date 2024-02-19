@@ -1,5 +1,5 @@
 import Head from "next/head";
-import { GameBoard } from "./components/GameBoard";
+import { GameBoard } from "../components/GameBoard";
 // Link from "next/link";
 
 export default function Home() {
