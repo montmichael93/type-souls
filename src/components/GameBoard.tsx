@@ -1,10 +1,11 @@
-import { usePlayer } from "none/UsePlayer";
-import { UseSampler } from "none/UseSampler";
-import { createTrackedWords } from "none/determineLetterState";
+import { usePlayer } from "none/utils/UsePlayer";
+import { UseSampler } from "none/utils/UseSampler";
+import { createTrackedWords } from "none/utils/determineLetterState";
 import { type ChangeEventHandler, useState, useRef } from "react";
 import { GameStats } from "./GameStats";
 import { Word } from "./Word";
-import { type TrackedWord } from "none/types";
+import { type TrackedWord } from "none/utils/types";
+import { type Frequency } from "tone/build/esm/core/type/Units";
 
 const gameText = `Hello my name is. olor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua`;
 //const gameText = "abc def ghi";
@@ -30,12 +31,16 @@ export const GameBoard = () => {
     }
   };
 
-  //const katanaStrike = () => sampler && sampler.triggerAttack("A1");
-
   const inputHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     const lastKey = e.target.value.at(-1);
+    const attackAndDamageSounds = ["A1", "A2", "A3", "A4", "A5"];
+    const selectSoundAtRandom = attackAndDamageSounds[
+      Math.floor(Math.random() * 3)
+    ] as Frequency;
+
     if (lastKey === " ") {
-      sampler?.triggerAttack("A1");
+      sampler?.triggerAttack(selectSoundAtRandom);
+
       const trackedWord = trackedWords[wordIndex];
       if (trackedWord?.correct !== trackedWord?.current) {
         setIncorrectCount(incorrectCount + 1);

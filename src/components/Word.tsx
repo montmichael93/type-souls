@@ -1,9 +1,10 @@
 import {
   determineLetterState,
   getCorrectToIndex,
-} from "none/determineLetterState";
-import { type TrackedWord } from "none/types";
+} from "none/utils/determineLetterState";
+
 import { Letter } from "./Letter";
+import { type TrackedWord } from "none/utils/types";
 
 export const Word = ({
   index,
