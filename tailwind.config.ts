@@ -8,6 +8,11 @@ export default {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
       },
+      backgroundImage: {
+        Lodran: "url(/lodran.jpg)",
+        Drangleic: "url(/drangleicCastle.jpg)",
+        Lothric: "url(/lothric.png)",
+      },
     },
   },
   plugins: [],

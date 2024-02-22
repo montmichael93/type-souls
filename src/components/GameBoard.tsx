@@ -1,16 +1,35 @@
 import { usePlayer } from "none/utils/UsePlayer";
 import { UseSampler } from "none/utils/UseSampler";
 import { createTrackedWords } from "none/utils/determineLetterState";
-import { type ChangeEventHandler, useState, useRef } from "react";
+import {
+  type ChangeEventHandler,
+  useState,
+  useRef,
+  type Dispatch,
+  type SetStateAction,
+} from "react";
 import { GameStats } from "./GameStats";
 import { Word } from "./Word";
 import { type TrackedWord } from "none/utils/types";
 import { type Frequency } from "tone/build/esm/core/type/Units";
+import { bossData } from "public/bosses-data";
+import Image from "next/image";
+import { type StaticImport } from "next/dist/shared/lib/get-img-props";
 
 const gameText = `Hello my name is. olor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua`;
 //const gameText = "abc def ghi";
 
-export const GameBoard = () => {
+export const GameBoard = ({
+  selectedBoss,
+  //engagedInCombat,
+  setEngagedInCombat,
+  setSelectedBoss,
+}: {
+  selectedBoss: number;
+  //engagedInCombat: boolean;
+  setSelectedBoss: Dispatch<SetStateAction<number>>;
+  setEngagedInCombat: Dispatch<SetStateAction<boolean>>;
+}) => {
   const sampler = UseSampler();
   const player = usePlayer();
   const [wordIndex, setWordIndex] = useState(0);
@@ -21,7 +40,13 @@ export const GameBoard = () => {
   const inputRef = useRef<HTMLInputElement>(null);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
+
+  //const [mainMenuActive, setMainMenuActive] = useState(false);
+
   const [activeGame, setActiveGame] = useState(false);
+
+  const bossCombatImage = bossData[selectedBoss]
+    ?.combatImage as unknown as StaticImport;
 
   const playTheme = () => {
     if (wordIndex === trackedWords.length) {
@@ -64,18 +89,25 @@ export const GameBoard = () => {
   };
 
   return (
-    <main className="flex min-h-screen flex-col items-center justify-center border-r-2 bg-[url('/bonfire.jpg')] bg-cover bg-center px-24 ">
-      <div className="container flex flex-col items-center justify-center gap-12 px-4 py-16">
-        <h1 className=" font-kode text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
-          <span className="text-[hsl(0,100%,100%)] opacity-50">Type Souls</span>
-        </h1>
-        <div className="grid grid-cols-1 gap-4  px-24 sm:grid-cols-2 md:gap-8"></div>
+    <>
+      <div>
+        <div>
+          <Image
+            //className={`translate-x-[20rem] transform`}
+            src={bossCombatImage}
+            alt=""
+            width={400}
+            height={400}
+          />
+        </div>
 
-        <GameStats
-          correctCount={correctCount}
-          incorrectCount={incorrectCount}
-          total={incorrectCount + correctCount}
-        />
+        <div>
+          <GameStats
+            correctCount={correctCount}
+            incorrectCount={incorrectCount}
+          />
+        </div>
+
         <div
           id="game-container"
           className="flex h-44 w-full flex-wrap bg-slate-800 p-3 text-xl text-slate-200 opacity-50 "
@@ -93,6 +125,8 @@ export const GameBoard = () => {
             />
           ))}
         </div>
+      </div>
+      <div>
         <input
           type="text"
           hidden={!activeGame}
@@ -100,9 +134,8 @@ export const GameBoard = () => {
           value={inputState}
           onChange={inputHandler}
           ref={inputRef}
-          className={`text-black`}
         />
       </div>
-    </main>
+    </>
   );
 };

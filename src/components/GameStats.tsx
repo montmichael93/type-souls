@@ -4,7 +4,6 @@ export const GameStats = ({
 }: {
   correctCount: number;
   incorrectCount: number;
-  total: number;
 }) => {
   return (
     <div className="font-kode flex h-28 w-full items-center justify-between text-red-600">

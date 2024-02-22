@@ -9,10 +9,10 @@ const TrackedWordSchema = z.object({
 export type TrackedWord = z.infer<typeof TrackedWordSchema>;
 
 const BossData = z.object({
+  id: z.number(),
   name: z.string(),
   levelUp: z.number(),
   reward: z.number(),
-  combatLocation: z.string(),
   bossMenuImage: z.string(),
   combatImage: z.string(),
   victoryImage: z.string(),
