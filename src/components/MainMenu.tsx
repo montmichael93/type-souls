@@ -8,20 +8,36 @@ export const MainMenu = ({
   engagedInCombat,
   bossMenuSelected,
   selectedBoss,
+  didPlayerDie,
+  didPlayerSurvive,
   setBossMenuSelected,
   setEngagedInCombat,
   setSelectedBoss,
+  setIsBonFireLit,
+  setDidPlayerDie,
+  setDidPlayerSurvive,
 }: {
   isBonFireLit: boolean;
   engagedInCombat: boolean;
   bossMenuSelected: boolean;
   selectedBoss: number;
+  didPlayerDie: boolean;
+  didPlayerSurvive: boolean;
   setBossMenuSelected: Dispatch<SetStateAction<boolean>>;
   setEngagedInCombat: Dispatch<SetStateAction<boolean>>;
   setSelectedBoss: Dispatch<SetStateAction<number>>;
+  setIsBonFireLit: Dispatch<SetStateAction<boolean>>;
+  setDidPlayerDie: Dispatch<SetStateAction<boolean>>;
+  setDidPlayerSurvive: Dispatch<SetStateAction<boolean>>;
 }) => {
-  //const [bossMenuSelected, setBossMenuSelected] = useState(false);
-  //const [leaderBoardMenuSelected, setLeaderBoardSelected] = useState(false)
+  /*
+  const mainMenuDisplay =
+    isBonFireLit &&
+    !bossMenuSelected &&
+    !engagedInCombat &&
+    !didPlayerDie &&
+    !didPlayerSurvive;*/
+
   return (
     <>
       {isBonFireLit && !bossMenuSelected && (
@@ -44,9 +60,14 @@ export const MainMenu = ({
         <BossesMenu
           selectedBoss={selectedBoss}
           engagedInCombat={engagedInCombat}
+          didPlayerDie={didPlayerDie}
+          didPlayerSurvive={didPlayerSurvive}
           setEngagedInCombat={setEngagedInCombat}
           setBossMenuSelected={setBossMenuSelected}
           setSelectedBoss={setSelectedBoss}
+          setIsBonFireLit={setIsBonFireLit}
+          setDidPlayerDie={setDidPlayerDie}
+          setDidPlayerSurvive={setDidPlayerSurvive}
         />
       )}
     </>

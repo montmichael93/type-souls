@@ -1,20 +1,30 @@
 import { type Dispatch, type SetStateAction } from "react";
 import { useGame } from "./Provider";
 import Image from "next/image";
-import { GameBoard } from "./GameBoard";
+import { CombatScreen } from "./CombatScreen";
 
 export const BossesMenu = ({
   engagedInCombat,
   selectedBoss,
+  didPlayerDie,
+  didPlayerSurvive,
   setBossMenuSelected,
   setEngagedInCombat,
   setSelectedBoss,
+  setIsBonFireLit,
+  setDidPlayerDie,
+  setDidPlayerSurvive,
 }: {
   engagedInCombat: boolean;
   selectedBoss: number;
+  didPlayerDie: boolean;
+  didPlayerSurvive: boolean;
   setBossMenuSelected: Dispatch<SetStateAction<boolean>>;
   setEngagedInCombat: Dispatch<SetStateAction<boolean>>;
   setSelectedBoss: Dispatch<SetStateAction<number>>;
+  setIsBonFireLit: Dispatch<SetStateAction<boolean>>;
+  setDidPlayerDie: Dispatch<SetStateAction<boolean>>;
+  setDidPlayerSurvive: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { bossData } = useGame();
 
@@ -31,7 +41,7 @@ export const BossesMenu = ({
             <button>return to main menu</button>
           </div>
 
-          <div className=" flex gap-x-40 text-white ">
+          <div className=" flex gap-x-40 text-center text-white">
             {bossData.map((boss) => {
               return (
                 <div
@@ -56,10 +66,17 @@ export const BossesMenu = ({
       )}
 
       {engagedInCombat && (
-        <GameBoard
+        <CombatScreen
           selectedBoss={selectedBoss}
+          engagedInCombat={engagedInCombat}
+          didPlayerDie={didPlayerDie}
+          didPlayerSurvive={didPlayerSurvive}
+          setBossMenuSelected={setBossMenuSelected}
           setSelectedBoss={setSelectedBoss}
           setEngagedInCombat={setEngagedInCombat}
+          setIsBonFireLit={setIsBonFireLit}
+          setDidPlayerDie={setDidPlayerDie}
+          setDidPlayerSurvive={setDidPlayerSurvive}
         />
       )}
     </>

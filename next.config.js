@@ -18,13 +18,14 @@ const config = {
     locales: ["en"],
     defaultLocale: "en",
   },
+
   webpack(config) {
     // eslint-disable-next-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
     config.module.rules.push({
       test: /\.(ogg|mp3|wav|mpe?g)$/i,
       use: [
         {
-          loader: "url-loader",
+          loader: "file-loader",
           options: {
             name: "[name]-[hash].[ext]",
           },
@@ -37,14 +38,13 @@ const config = {
       test: /\.(png|jpe?g|gif|svg)$/i,
       use: [
         {
-          loader: "url-loader",
+          loader: "file-loader",
           options: {
             name: "[name]-[hash].[ext]",
           },
         },
       ],
     });
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-return
     return config;
   },
