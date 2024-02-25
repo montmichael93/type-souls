@@ -16,9 +16,10 @@ export const bossData: BossData[] = [
     levelUp: 10,
     reward: 10000,
     bossMenuImage: "/gwynLordOfCinderBossMenu.png",
+    combatLocation: `bg-Lodran`,
     combatImage: "/gwynLordOfCinderCombat.jpg",
-    victoryImage: "/gwynVictoryImage.jpg",
-    defeatImage: "/gwynDefeatImage.jpg",
+    victoryImage: `bg-GwynVictory`,
+    defeatImage: `bg-GwynDefeat`,
     bossText: gwynLordOfCinderText,
     bossThemeMusic: "/GwynLordOfCinder.mp3",
   },
@@ -28,9 +29,10 @@ export const bossData: BossData[] = [
     levelUp: 20,
     reward: 20000,
     bossMenuImage: "/nashandraQueenOfDrangleicBossMenu.png",
+    combatLocation: `bg-Drangleic`,
     combatImage: "/nashandraQueenOfDrangleicCombat.png",
-    victoryImage: "/nashandraVictoryImage.jpg",
-    defeatImage: "/nashandraDefeatImage.jpg",
+    victoryImage: `bg-NashandraVictory`,
+    defeatImage: `bg-NashandraDefeat`,
     bossText: nashandraQueenOfDrangleicText,
     bossThemeMusic: "/queenOfDrangleic.mp3",
   },
@@ -40,10 +42,37 @@ export const bossData: BossData[] = [
     levelUp: 30,
     reward: 30000,
     bossMenuImage: "/soulOfCinderBossMenuImage.jpg",
+    combatLocation: `bg-Lothric`,
     combatImage: "/soulOfCinderCombatImage.png",
-    victoryImage: "/soulOfCinderVictoryImage.png",
-    defeatImage: "/soulOfCinderDefeatImage.jpg",
+    victoryImage: `bg-SoulOfCinderVictory`,
+    defeatImage: `bg-SoulOfCinderDefeat`,
     bossText: soulOfCinderText,
     bossThemeMusic: "/soulOfCinder.mp3",
+  },
+];
+
+export const testData = [
+  {
+    id: 0,
+    name: "Michael of Dibs",
+    level: 60,
+    souls: 60000,
+  },
+  {
+    id: 0,
+    name: "nanashi",
+    level: 600,
+    souls: 600000,
+  },
+];
+
+export const messages = [
+  {
+    id: 0,
+    message: "I love the fire keeper",
+  },
+  {
+    id: 1,
+    message: "I am married to the queen of Drangleic",
   },
 ];

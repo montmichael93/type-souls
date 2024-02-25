@@ -1,67 +1,60 @@
-import { type Dispatch, type SetStateAction } from "react";
+import { type Dispatch, type SetStateAction, useState } from "react";
 import { useGame } from "./Provider";
 import Image from "next/image";
 import { CombatScreen } from "./CombatScreen";
 
 export const BossesMenu = ({
-  engagedInCombat,
-  selectedBoss,
-  didPlayerDie,
-  didPlayerSurvive,
   setBossMenuSelected,
-  setEngagedInCombat,
-  setSelectedBoss,
-  setIsBonFireLit,
-  setDidPlayerDie,
-  setDidPlayerSurvive,
 }: {
-  engagedInCombat: boolean;
-  selectedBoss: number;
-  didPlayerDie: boolean;
-  didPlayerSurvive: boolean;
   setBossMenuSelected: Dispatch<SetStateAction<boolean>>;
-  setEngagedInCombat: Dispatch<SetStateAction<boolean>>;
-  setSelectedBoss: Dispatch<SetStateAction<number>>;
-  setIsBonFireLit: Dispatch<SetStateAction<boolean>>;
-  setDidPlayerDie: Dispatch<SetStateAction<boolean>>;
-  setDidPlayerSurvive: Dispatch<SetStateAction<boolean>>;
 }) => {
   const { bossData } = useGame();
+  const [selectedBoss, setSelectedBoss] = useState<number | null>(null);
+  const [engagedInCombat, setEngagedInCombat] = useState(false);
 
   return (
     <>
       {!engagedInCombat && (
         <>
-          <div
-            className=" translate-y-[-4rem] transform place-self-end border-[0.1rem] border-solid border-[white] p-4 text-white"
-            onClick={() => {
-              setBossMenuSelected(false);
-            }}
+          <main
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-[url("/bonfire.jpg")] bg-cover bg-center px-24`}
           >
-            <button>return to main menu</button>
-          </div>
+            <div
+              className=" font-kode-mono place-self-end border-[0.1rem] border-solid border-[white] p-4 text-red-900"
+              onClick={() => {
+                setBossMenuSelected(false);
+              }}
+            >
+              <button>Return To Main Menu</button>
+            </div>
+            <div>
+              <h1 className="font-kode-mono translate-y-[-1rem] text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]">
+                <span>Type Souls</span>
+              </h1>
+            </div>
 
-          <div className=" flex gap-x-40 text-center text-white">
-            {bossData.map((boss) => {
-              return (
-                <div
-                  key={boss.id}
-                  onClick={() => {
-                    setSelectedBoss(boss.id);
-                    setEngagedInCombat(true);
-                  }}
-                >
-                  <h2 className="text-[1.5rem]">{boss.name}</h2>
-                  <Image
-                    src={boss.bossMenuImage}
-                    alt=""
-                    width={300}
-                    height={300}
-                  />
-                </div>
-              );
-            })}
-          </div>
+            <div className="flex gap-x-40 text-center text-white">
+              {bossData.map((boss) => {
+                return (
+                  <div
+                    key={boss.id}
+                    onClick={() => {
+                      setSelectedBoss(boss.id);
+                      setEngagedInCombat(true);
+                    }}
+                  >
+                    <h2 className="text-[1.5rem] ">{boss.name}</h2>
+                    <Image
+                      src={boss.bossMenuImage}
+                      alt=""
+                      width={300}
+                      height={300}
+                    />
+                  </div>
+                );
+              })}
+            </div>
+          </main>
         </>
       )}
 
@@ -69,14 +62,9 @@ export const BossesMenu = ({
         <CombatScreen
           selectedBoss={selectedBoss}
           engagedInCombat={engagedInCombat}
-          didPlayerDie={didPlayerDie}
-          didPlayerSurvive={didPlayerSurvive}
-          setBossMenuSelected={setBossMenuSelected}
           setSelectedBoss={setSelectedBoss}
           setEngagedInCombat={setEngagedInCombat}
-          setIsBonFireLit={setIsBonFireLit}
-          setDidPlayerDie={setDidPlayerDie}
-          setDidPlayerSurvive={setDidPlayerSurvive}
+          setBossMenuSelected={setBossMenuSelected}
         />
       )}
     </>

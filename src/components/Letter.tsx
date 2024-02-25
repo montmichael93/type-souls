@@ -9,16 +9,6 @@ export const Letter = ({
   value: string;
   status: StatusTypes;
 }) => {
-  //const sampler = UseSampler();
-  /*
-  const swordStrike = () => {
-    if (sampler) {
-      sampler.triggerAttack("A1");
-    }
-  };*/
-
-  //console.log(value);
-
   const className = (() => {
     if (status === "correct") {
       //swordStrike();
@@ -34,5 +24,5 @@ export const Letter = ({
       return "text-red-500";
     }
   })();
-  return <span className={` font-kode ${className}`}>{value}</span>;
+  return <span className={` font-kode-mono ${className}`}>{value}</span>;
 };

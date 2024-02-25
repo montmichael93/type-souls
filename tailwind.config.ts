@@ -7,6 +7,7 @@ export default {
     extend: {
       fontFamily: {
         sans: ["var(--font-sans)", ...fontFamily.sans],
+        "kode-mono": ['"Kode Mono"', "monospace"],
       },
       backgroundImage: {
         Lodran: "url(/lodran.jpg)",
