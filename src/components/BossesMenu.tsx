@@ -1,46 +1,38 @@
-import { type Dispatch, type SetStateAction, useState } from "react";
+import { type Dispatch, type SetStateAction } from "react";
 import { useGame } from "./Provider";
 import Image from "next/image";
-import { CombatScreen } from "./CombatScreen";
 
 export const BossesMenu = ({
-  setBossMenuSelected,
+  setSelectedBoss,
 }: {
-  setBossMenuSelected: Dispatch<SetStateAction<boolean>>;
+  setSelectedBoss: Dispatch<SetStateAction<number>>;
 }) => {
-  const { bossData } = useGame();
-  const [selectedBoss, setSelectedBoss] = useState<number | null>(null);
-  const [engagedInCombat, setEngagedInCombat] = useState(false);
+  const { bossData, activeComponent, setActiveComponent } = useGame();
 
   return (
     <>
-      {!engagedInCombat && (
+      {activeComponent === "boss-menu" && (
         <>
           <main
-            className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-[url("/bonfire.jpg")] bg-cover bg-center px-24`}
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-bonfire bg-cover bg-center px-24`}
           >
             <div
-              className=" font-kode-mono place-self-end border-[0.1rem] border-solid border-[white] p-4 text-red-900"
+              className=" place-self-end border-[0.1rem] border-solid border-[white] p-4 font-kode-mono text-red-900"
               onClick={() => {
-                setBossMenuSelected(false);
+                setActiveComponent("main-menu");
               }}
             >
               <button>Return To Main Menu</button>
             </div>
-            <div>
-              <h1 className="font-kode-mono translate-y-[-1rem] text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]">
-                <span>Type Souls</span>
-              </h1>
-            </div>
 
-            <div className="flex gap-x-40 text-center text-white">
+            <div className="flex flex-col gap-4 text-center text-red-900">
               {bossData.map((boss) => {
                 return (
                   <div
                     key={boss.id}
                     onClick={() => {
                       setSelectedBoss(boss.id);
-                      setEngagedInCombat(true);
+                      setActiveComponent("combat");
                     }}
                   >
                     <h2 className="text-[1.5rem] ">{boss.name}</h2>
@@ -56,16 +48,6 @@ export const BossesMenu = ({
             </div>
           </main>
         </>
-      )}
-
-      {engagedInCombat && (
-        <CombatScreen
-          selectedBoss={selectedBoss}
-          engagedInCombat={engagedInCombat}
-          setSelectedBoss={setSelectedBoss}
-          setEngagedInCombat={setEngagedInCombat}
-          setBossMenuSelected={setBossMenuSelected}
-        />
       )}
     </>
   );

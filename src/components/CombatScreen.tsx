@@ -14,26 +14,33 @@ import { type TrackedWord } from "none/utils/types";
 import { type Frequency } from "tone/build/esm/core/type/Units";
 import Image from "next/image";
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
-import { CombatResults } from "./CombatResults";
 import { useGame } from "./Provider";
 
 const gameText = `123`;
 //const gameText = "abc def ghi";
 
 export const CombatScreen = ({
+  correctCount,
+  incorrectCount,
   selectedBoss,
-  engagedInCombat,
-  setEngagedInCombat,
-  setSelectedBoss,
-  setBossMenuSelected,
+  didPlayerDie,
+  didPlayerSurvive,
+  setDidPlayerDie,
+  setDidPlayerSurvive,
+  setIncorrectCount,
+  setCorrectCount,
 }: {
-  selectedBoss: number | null;
-  engagedInCombat: boolean;
-  setSelectedBoss: Dispatch<SetStateAction<number | null>>;
-  setEngagedInCombat: Dispatch<SetStateAction<boolean>>;
-  setBossMenuSelected: Dispatch<SetStateAction<boolean>>;
+  correctCount: number;
+  incorrectCount: number;
+  selectedBoss: number;
+  didPlayerDie: boolean;
+  didPlayerSurvive: boolean;
+  setDidPlayerDie: Dispatch<SetStateAction<boolean>>;
+  setDidPlayerSurvive: Dispatch<SetStateAction<boolean>>;
+  setIncorrectCount: Dispatch<SetStateAction<number>>;
+  setCorrectCount: Dispatch<SetStateAction<number>>;
 }) => {
-  const { bossData } = useGame();
+  const { bossData, activeComponent, setActiveComponent } = useGame();
   const sampler = UseSampler();
   const player = usePlayer();
   const [wordIndex, setWordIndex] = useState(0);
@@ -42,10 +49,10 @@ export const CombatScreen = ({
     createTrackedWords(gameText),
   );
   const inputRef = useRef<HTMLInputElement>(null);
-  const [incorrectCount, setIncorrectCount] = useState(0);
-  const [correctCount, setCorrectCount] = useState(0);
-  const [didPlayerDie, setDidPlayerDie] = useState(false);
-  const [didPlayerSurvive, setDidPlayerSurvive] = useState(false);
+  //const [incorrectCount, setIncorrectCount] = useState(0);
+  //const [correctCount, setCorrectCount] = useState(0);
+  //const [didPlayerDie, setDidPlayerDie] = useState(false);
+  //const [didPlayerSurvive, setDidPlayerSurvive] = useState(false);
 
   const average = Math.round(
     (correctCount / (incorrectCount + correctCount)) * 100,
@@ -62,12 +69,14 @@ export const CombatScreen = ({
   if (wordIndex === trackedWords.length && !didPlayerSurvive && !didPlayerDie) {
     if (average === 100) {
       setDidPlayerSurvive(true);
+      setActiveComponent("combat-outcome");
     } else {
       setDidPlayerDie(true);
+      setActiveComponent("combat-outcome");
     }
   }
 
-  const endOfCombat = didPlayerDie || didPlayerSurvive;
+  //const endOfCombat = didPlayerDie || didPlayerSurvive;
 
   const inputHandler: ChangeEventHandler<HTMLInputElement> = (e) => {
     const lastKey = e.target.value.at(-1);
@@ -101,23 +110,25 @@ export const CombatScreen = ({
     );
   };
 
+  //const combatLocation = [`bg-Lodran`, `bg-Drangleic`, `bg-Lothric`];
+
   return (
     <>
-      {!didPlayerDie && !didPlayerSurvive && (
+      {activeComponent === "combat" && (
         <>
           <main
-            className={` flex min-h-screen flex-col items-center justify-center border-r-2 ${bossData[selectedBoss!]?.combatLocation} bg-cover bg-center px-24`}
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-cover bg-center px-24 ${bossData[selectedBoss]?.combatLocation}`}
           >
             <div>
-              <h1 className="font-kode-mono translate-y-[-1rem] text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]">
-                <span>{bossData[selectedBoss!]?.name}</span>
+              <h1 className="translate-y-[-1rem] font-kode-mono text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]">
+                <span>{bossData[selectedBoss]?.name}</span>
               </h1>
             </div>
             <div>
               <div>
                 <Image
                   src={
-                    bossData[selectedBoss!]
+                    bossData[selectedBoss]
                       ?.combatImage as unknown as StaticImport
                   }
                   alt=""
@@ -137,7 +148,7 @@ export const CombatScreen = ({
                 id="game-container"
                 className="flex h-44 w-full flex-wrap bg-slate-800 p-3 text-xl text-slate-200 opacity-50 "
                 onClick={() => {
-                  setEngagedInCombat(true);
+                  //setEngagedInCombat(true);
                   //inputRef.current?.focus();
                 }}
               >
@@ -150,11 +161,14 @@ export const CombatScreen = ({
                   />
                 ))}
               </div>
+              <div className="bg-black text-center text-red-900">
+                Travel to Bonfire is not available during combat
+              </div>
             </div>
             <div>
               <input
                 type="text"
-                hidden={!engagedInCombat}
+                //hidden={!engagedInCombat}
                 onClick={playTheme}
                 value={inputState}
                 onChange={inputHandler}
@@ -163,21 +177,6 @@ export const CombatScreen = ({
             </div>
           </main>
         </>
-      )}
-
-      {endOfCombat && (
-        <CombatResults
-          didPlayerDie={didPlayerDie}
-          didPlayerSurvive={didPlayerSurvive}
-          selectedBoss={selectedBoss}
-          setCorrectCount={setCorrectCount}
-          setIncorrectCount={setIncorrectCount}
-          setDidPlayerDie={setDidPlayerDie}
-          setDidPlayerSurvive={setDidPlayerSurvive}
-          setSelectedBoss={setSelectedBoss}
-          setEngagedInCombat={setEngagedInCombat}
-          setBossMenuSelected={setBossMenuSelected}
-        />
       )}
     </>
   );

@@ -10,40 +10,36 @@ export const CombatResults = ({
   setDidPlayerDie,
   setDidPlayerSurvive,
   setSelectedBoss,
-  setEngagedInCombat,
-  setBossMenuSelected,
 }: {
   didPlayerDie: boolean;
   didPlayerSurvive: boolean;
-  selectedBoss: number | null;
+  selectedBoss: number;
   setCorrectCount: Dispatch<SetStateAction<number>>;
   setIncorrectCount: Dispatch<SetStateAction<number>>;
-  setSelectedBoss: Dispatch<SetStateAction<number | null>>;
+  setSelectedBoss: Dispatch<SetStateAction<number>>;
   setDidPlayerDie: Dispatch<SetStateAction<boolean>>;
   setDidPlayerSurvive: Dispatch<SetStateAction<boolean>>;
-  setEngagedInCombat: Dispatch<SetStateAction<boolean>>;
-  setBossMenuSelected: Dispatch<SetStateAction<boolean>>;
 }) => {
-  const { bossData } = useGame();
+  const { bossData, setActiveComponent } = useGame();
+
   return (
     <>
       {didPlayerDie && (
         <>
           <main
-            className={` flex min-h-screen flex-col items-center justify-center border-r-2 ${bossData[selectedBoss!]?.defeatImage} bg-cover bg-center px-24`}
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2 ${bossData[selectedBoss]?.victoryImage} bg-cover bg-center px-24`}
           >
             <div
-              className=" font-kode-mono place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 text-red-900"
+              className=" place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 font-kode-mono text-red-900"
               onClick={() => {
-                setSelectedBoss(null);
-                setBossMenuSelected(false);
-                setEngagedInCombat(false);
+                setSelectedBoss(-1);
+                setActiveComponent("main-menu");
                 setDidPlayerDie(false);
                 setCorrectCount(0);
                 setIncorrectCount(0);
               }}
             >
-              <button>return to main menu</button>
+              <button>Return to Bonfire</button>
             </div>
 
             <div className="text-[10rem] text-[darkred]">
@@ -55,20 +51,19 @@ export const CombatResults = ({
       {didPlayerSurvive && (
         <>
           <main
-            className={` flex min-h-screen flex-col items-center justify-center border-r-2 ${bossData[selectedBoss!]?.victoryImage} bg-cover bg-center px-24`}
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2 ${bossData[selectedBoss]?.defeatImage} bg-cover bg-center px-24`}
           >
             <div
-              className=" font-kode-mono translate-y-[-10rem] transform place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 text-red-900"
+              className=" translate-y-[-10rem] transform place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 font-kode-mono text-red-900"
               onClick={() => {
-                setSelectedBoss(null);
-                setBossMenuSelected(false);
-                setEngagedInCombat(false);
+                setSelectedBoss(-1);
+                setActiveComponent("main-menu");
                 setDidPlayerSurvive(false);
                 setCorrectCount(0);
                 setIncorrectCount(0);
               }}
             >
-              <button>Return To Main Menu</button>
+              <button>Return to Bonfire</button>
             </div>
 
             <div className="text-[10rem] text-[darkred]">

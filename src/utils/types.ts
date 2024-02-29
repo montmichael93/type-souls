@@ -1,18 +1,11 @@
 import { z } from "zod";
 
-const Messages = z.object({
+const MessagesSchema = z.object({
   id: z.number(),
   message: z.string(),
 });
 
-export type Messages = z.infer<typeof Messages>;
-
-/*
-const Player = z.object({
-  id: z.number(),
-  name: 
-
-})*/
+export type Messages = z.infer<typeof MessagesSchema>;
 
 const TrackedWordSchema = z.object({
   correct: z.string(),
@@ -22,7 +15,19 @@ const TrackedWordSchema = z.object({
 
 export type TrackedWord = z.infer<typeof TrackedWordSchema>;
 
-const BossData = z.object({
+const PlayerSchema = z.object({
+  id: z.number(),
+  name: z.string(),
+  level: z.number(),
+  souls: z.number(),
+  email: z.string(),
+  password: z.string(),
+  leftReview: z.boolean(),
+});
+
+export type Player = z.infer<typeof PlayerSchema>;
+
+const BossDataSchema = z.object({
   id: z.number(),
   name: z.string(),
   levelUp: z.number(),
@@ -36,4 +41,20 @@ const BossData = z.object({
   bossThemeMusic: z.string(),
 });
 
-export type BossData = z.infer<typeof BossData>;
+export type BossData = z.infer<typeof BossDataSchema>;
+
+const ActiveComponentSchema = z.union([
+  z.literal("landing-page"),
+  z.literal("sign-up"),
+  z.literal("log-in"),
+  z.literal("abyss"),
+  z.literal("main-menu"),
+  z.literal("messages"),
+  z.literal("leaderBoard"),
+  z.literal("review"),
+  z.literal("boss-menu"),
+  z.literal("combat"),
+  z.literal("combat-outcome"),
+]);
+
+export type ActiveComponent = z.infer<typeof ActiveComponentSchema>;

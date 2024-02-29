@@ -10,6 +10,8 @@ export default {
         "kode-mono": ['"Kode Mono"', "monospace"],
       },
       backgroundImage: {
+        bonfire: "url(/bonfire.jpg)",
+        bonfireTwo: "url(/bonfireTwo.jpg)",
         Lodran: "url(/lodran.jpg)",
         Drangleic: "url(/drangleicCastle.jpg)",
         Lothric: "url(/lothric.png)",

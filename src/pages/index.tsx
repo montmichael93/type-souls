@@ -1,5 +1,6 @@
 "use client";
 import Head from "next/head";
+import { AuthProvider } from "none/components/Authprovider";
 //import { GameBoard } from "../components/GameBoard";
 import { Game } from "none/components/Game";
 
@@ -20,9 +21,11 @@ export default function Home() {
         </style>
       </Head>
 
-      <GameProvider>
-        <Game />
-      </GameProvider>
+      <AuthProvider>
+        <GameProvider>
+          <Game />
+        </GameProvider>
+      </AuthProvider>
     </>
   );
 }
