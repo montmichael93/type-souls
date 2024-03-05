@@ -1,22 +1,19 @@
 import { useState } from "react";
 import { MainMenu } from "./MainMenu";
 import { LogInSignUp } from "./LogInSignUp";
-import { useGame } from "./Provider";
+import { useGame } from "./GameProvider";
 import { BossesMenu } from "./BossesMenu";
 import { LeaderBoard } from "./LeaderBoard";
 import { Messages } from "./Messages";
 import { CombatScreen } from "./CombatScreen";
 import { CombatResults } from "./CombatResults";
-import { useAuth } from "./Authprovider";
-
-//import { usePlayer } from "none/utils/UsePlayer";
+import { ReviewPage } from "./LeaveAReview";
 
 export const Game = () => {
-  const { playerInfo } = useAuth();
-  const { activeComponent, setActiveComponent } = useGame();
-  const [userSignedIn, setUserSignedIn] = useState(false);
+  const { activeComponent, playerMessages, setActiveComponent } = useGame();
+
   const [isBonFireLit, setIsBonFireLit] = useState(false);
-  const [selectedBoss, setSelectedBoss] = useState<number>(-1);
+  //const [selectedBoss, setSelectedBoss] = useState<number | null>(null);
   const [didPlayerDie, setDidPlayerDie] = useState(false);
   const [didPlayerSurvive, setDidPlayerSurvive] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
@@ -27,15 +24,12 @@ export const Game = () => {
   const revealSignUpAndLogIn =
     activeComponent === "landing-page" ||
     activeComponent === "sign-up" ||
-    activeComponent === "log-in";
-
-  console.log(playerInfo);
+    activeComponent === "log-in" ||
+    activeComponent === "review-page";
 
   return (
     <>
-      {revealSignUpAndLogIn && (
-        <LogInSignUp setUserSignedIn={setUserSignedIn} />
-      )}
+      {revealSignUpAndLogIn && <LogInSignUp />}
 
       {activeComponent === "abyss" && (
         <main
@@ -52,7 +46,6 @@ export const Game = () => {
             className="border-[0.1rem] border-solid border-[white] p-4 text-white"
             onClick={() => {
               setIsBonFireLit(true);
-              //playTheme();
               setActiveComponent("main-menu");
             }}
           >
@@ -63,13 +56,15 @@ export const Game = () => {
 
       {activeComponent === "main-menu" && <MainMenu />}
 
-      {activeComponent === "boss-menu" && (
-        <BossesMenu setSelectedBoss={setSelectedBoss} />
-      )}
+      {activeComponent === "boss-menu" && <BossesMenu />}
 
       {activeComponent === "leaderBoard" && <LeaderBoard />}
 
-      {activeComponent === "messages" && <Messages />}
+      {activeComponent === "messages" && (
+        <Messages playerMessages={playerMessages} />
+      )}
+
+      {activeComponent === "review" && <ReviewPage />}
 
       {activeComponent === "combat" && (
         <CombatScreen
@@ -77,7 +72,6 @@ export const Game = () => {
           incorrectCount={incorrectCount}
           didPlayerDie={didPlayerDie}
           didPlayerSurvive={didPlayerSurvive}
-          selectedBoss={selectedBoss}
           setCorrectCount={setCorrectCount}
           setIncorrectCount={setIncorrectCount}
           setDidPlayerDie={setDidPlayerDie}
@@ -89,12 +83,10 @@ export const Game = () => {
         <CombatResults
           didPlayerDie={didPlayerDie}
           didPlayerSurvive={didPlayerSurvive}
-          selectedBoss={selectedBoss}
           setCorrectCount={setCorrectCount}
           setIncorrectCount={setIncorrectCount}
           setDidPlayerDie={setDidPlayerDie}
           setDidPlayerSurvive={setDidPlayerSurvive}
-          setSelectedBoss={setSelectedBoss}
         />
       )}
     </>

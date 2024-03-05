@@ -12,11 +12,11 @@
     {
       "id": "c793",
       "name": "moemoekyun",
-      "level": 0,
+      "level": 310,
       "souls": 0,
       "email": "moe@gmail.com",
       "password": "123456",
-      "leftReview": false
+      "leftReview": true
     },
     {
       "id": "74d0",
@@ -28,98 +28,62 @@
       "leftReview": false
     },
     {
-      "id": "64d8",
-      "name": "adfsda",
+      "id": "0260",
+      "name": "new king 93",
       "level": 0,
       "souls": 0,
-      "email": "khkuj",
-      "password": ";klm;k",
+      "email": "newking93@gmail.com",
+      "password": "353544541",
       "leftReview": false
     },
     {
-      "id": "6926",
-      "name": ";njm;lk",
+      "id": "75b9",
+      "name": "new user",
       "level": 0,
       "souls": 0,
-      "email": "l;knmlkm",
-      "password": "lknlkm",
-      "leftReview": false
-    },
-    {
-      "id": "b4f2",
-      "name": "ubhkjnlnj",
-      "level": 0,
-      "souls": 0,
-      "email": "ljnlkjn",
-      "password": "ljnkljn",
-      "leftReview": false
-    },
-    {
-      "id": "ce42",
-      "name": "moemoekyun",
-      "level": 0,
-      "souls": 0,
-      "email": "moe@gmail.com",
-      "password": "lkjnlkj",
-      "leftReview": false
-    },
-    {
-      "id": "bf3f",
-      "name": "moemoekyun",
-      "level": 0,
-      "souls": 0,
-      "email": "moe@gmail.com",
-      "password": "123456",
-      "leftReview": false
-    },
-    {
-      "id": "4bf6",
-      "name": "lkmlkjnmlkj",
-      "level": 0,
-      "souls": 0,
-      "email": "ljnlkjnmlkm",
-      "password": "lknmlokmml",
-      "leftReview": false
-    },
-    {
-      "id": "42b0",
-      "name": "moemoekyun",
-      "level": 0,
-      "souls": 0,
-      "email": "moe@gmail.com",
-      "password": "123456",
-      "leftReview": false
-    },
-    {
-      "id": "0079",
-      "name": "kjnkjnk",
-      "level": 0,
-      "souls": 0,
-      "email": "kjnkjnkl",
-      "password": "ljmlkm",
-      "leftReview": false
-    },
-    {
-      "id": "ea47",
-      "name": "kljnljknm",
-      "level": 0,
-      "souls": 0,
-      "email": "lknmlkm",
-      "password": "lijmlimk",
+      "email": "new@gmail.com",
+      "password": "123",
       "leftReview": false
     }
   ],
-  "Messages": [
+  "messages": [
     {
       "id": "0",
       "contents": "I lost all my souls"
+    },
+    {
+      "id": "1",
+      "contents": "I love the fire keeper!"
+    },
+    {
+      "id": "1b62",
+      "contents": "testing"
+    },
+    {
+      "id": "826f",
+      "contents": "I am married to the queen of drangleic"
+    },
+    {
+      "id": "97a2",
+      "contents": "yo"
+    },
+    {
+      "id": "6af1",
+      "contents": "nice"
     }
   ],
-  "Reviews": [
+  "reviews": [
     {
       "id": "0",
       "playerName": "michael of dibs",
+      "level": 60,
       "content": "this game is not for the faint of heart"
+    },
+    {
+      "id": "4c99",
+      "playerName": "moemoekyun",
+      "level": 60,
+      "content": "best game ever"
     }
   ]
 }

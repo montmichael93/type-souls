@@ -1,15 +1,17 @@
-import { useState, type Dispatch, type SetStateAction } from "react";
+import { useState } from "react";
 import Image from "next/image";
 import { useAuth } from "./Authprovider";
-import { useGame } from "./Provider";
+import { useGame } from "./GameProvider";
 
-export const LogInSignUp = ({
-  setUserSignedIn,
-}: {
-  setUserSignedIn: Dispatch<SetStateAction<boolean>>;
-}) => {
+export const LogInSignUp = () => {
   const { postNewPlayer, logInAttempt } = useAuth();
-  const { activeComponent, setActiveComponent } = useGame();
+  const {
+    playerReviews,
+    activeComponent,
+    setActiveComponent,
+    setPlayerReviews,
+    retrievePlayerReviews,
+  } = useGame();
   const [nameInput, setNameInput] = useState("");
   const [emailInput, setEmailInput] = useState("");
   const [passwordInput, setPasswordInput] = useState("");
@@ -18,40 +20,56 @@ export const LogInSignUp = ({
     <>
       <main className="flex flex-col items-center">
         <div>
-          <h1 className="text-[4rem]">Type Souls</h1>
+          <h1 className="font-kode-mono text-[4rem]">Type Souls</h1>
         </div>
 
         <div className="flex flex-col gap-1">
           <Image src={"/fireKeeper.png"} height={300} width={300} alt="" />
 
           {activeComponent === "landing-page" && (
-            <div className="flex justify-between font-kode-mono text-indigo-700">
-              <div
-                className="border-[0.1rem] border-solid border-[black] bg-black p-4"
+            <>
+              <div className="flex justify-between font-kode-mono text-indigo-700">
+                <div
+                  className="border-[0.1rem] border-solid border-[black] bg-black p-4"
+                  onClick={() => {
+                    setActiveComponent("log-in");
+                  }}
+                >
+                  <button>Log In</button>
+                </div>
+                <div
+                  className="border-[0.1rem] border-solid border-[black] bg-black p-4"
+                  onClick={() => {
+                    setActiveComponent("sign-up");
+                  }}
+                >
+                  <button>Sign Up</button>
+                </div>
+              </div>
+
+              <span
+                className="flex self-center font-kode-mono text-indigo-700"
                 onClick={() => {
-                  //setOldPlayerLogIn(true);
-                  setActiveComponent("log-in");
+                  retrievePlayerReviews()
+                    .then((reviews) => {
+                      setPlayerReviews(reviews);
+                    })
+                    .catch((error) => {
+                      console.log(error);
+                    });
+
+                  setActiveComponent("review-page");
                 }}
               >
-                <button>Log In</button>
-              </div>
-              <div
-                className="border-[0.1rem] border-solid border-[black] bg-black p-4"
-                onClick={() => {
-                  //setNewPlayerSignUp(true);
-                  setActiveComponent("sign-up");
-                }}
-              >
-                <button>Sign Up</button>
-              </div>
-            </div>
+                <button>Reviews</button>
+              </span>
+            </>
           )}
 
           {activeComponent === "sign-up" && (
             <form
               className="bg-black text-center font-kode-mono text-white"
               onSubmit={(e) => {
-                //setUserSignedIn(true);
                 e.preventDefault();
                 postNewPlayer({
                   name: nameInput,
@@ -113,7 +131,6 @@ export const LogInSignUp = ({
                 />
                 <span
                   onClick={() => {
-                    //setNewPlayerSignUp(false);
                     setActiveComponent("landing-page");
                   }}
                 >
@@ -127,7 +144,6 @@ export const LogInSignUp = ({
             <form
               className="bg-black text-center font-kode-mono text-white"
               onSubmit={(e) => {
-                //setUserSignedIn(true);
                 e.preventDefault();
                 logInAttempt({
                   email: emailInput,
@@ -136,7 +152,6 @@ export const LogInSignUp = ({
                   .then(() => {
                     setEmailInput("");
                     setPasswordInput("");
-                    setUserSignedIn(true);
                     setActiveComponent("abyss");
                   })
                   .catch((e) => {
@@ -175,7 +190,6 @@ export const LogInSignUp = ({
                 />
                 <span
                   onClick={() => {
-                    //setOldPlayerLogIn(false);
                     setActiveComponent("landing-page");
                   }}
                 >
@@ -184,6 +198,26 @@ export const LogInSignUp = ({
               </div>
             </form>
           )}
+
+          {activeComponent === "review-page" &&
+            playerReviews.map((review) => (
+              <>
+                <div key={review.id} className="bg-slate-800 text-white">
+                  <h2 className="font-kode-mono">{review.playerName}</h2>
+                  <h2 className="font-kode-mono">Level: {review.level}</h2>
+                  <p className="font=kode-mono"> {review.content}</p>
+                </div>
+              </>
+            ))}
+          <div
+            hidden={activeComponent != "review-page"}
+            className="text-center font-kode-mono text-indigo-700"
+            onClick={() => {
+              setActiveComponent("landing-page");
+            }}
+          >
+            go back
+          </div>
         </div>
       </main>
     </>

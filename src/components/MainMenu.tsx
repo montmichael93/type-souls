@@ -1,12 +1,17 @@
 //import { useState } from "react";
-
-import Image from "next/image";
-import { useGame } from "./Provider";
+import { useGame } from "./GameProvider";
 import { useAuth } from "./Authprovider";
 
 export const MainMenu = () => {
   const { playerInfo } = useAuth();
-  const { activeComponent, setActiveComponent } = useGame();
+  const {
+    activeComponent,
+    setActiveComponent,
+    setPlayerMessages,
+    retrievePlayerMessages,
+  } = useGame();
+
+  console.log(playerInfo);
 
   return (
     <>
@@ -18,13 +23,6 @@ export const MainMenu = () => {
             <h1 className="translate-y-[-1rem] text-center font-kode-mono text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]">
               <span>Type Souls</span>
             </h1>
-
-            <Image
-              src={"/fireKeeperMainMenu.jpg"}
-              width={500}
-              height={500}
-              alt=""
-            />
           </div>
 
           <div
@@ -35,6 +33,17 @@ export const MainMenu = () => {
             }}
           >
             <button>Bosses</button>
+          </div>
+
+          <div
+            hidden={playerInfo?.leftReview}
+            className=" flex  w-40 self-baseline border-[0.1rem] border-solid p-4 text-center font-kode-mono text-white"
+            onClick={() => {
+              //setBossMenuSelected(true);
+              !playerInfo?.leftReview && setActiveComponent("review");
+            }}
+          >
+            <button hidden={playerInfo?.leftReview}>leave a review</button>
           </div>
 
           <div
@@ -50,7 +59,14 @@ export const MainMenu = () => {
           <div
             className="w-40 self-end border-[0.1rem] border-solid border-[white] p-4 text-center font-kode-mono text-white"
             onClick={() => {
-              //setMessagesSelected(true);
+              retrievePlayerMessages()
+                .then((messages) => {
+                  setPlayerMessages(messages);
+                })
+                .catch((error) => {
+                  console.log(error);
+                });
+
               setActiveComponent("messages");
             }}
           >

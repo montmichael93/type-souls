@@ -6,6 +6,8 @@ import {
   useContext,
   useState,
   useEffect,
+  type Dispatch,
+  type SetStateAction,
 } from "react";
 import toast from "react-hot-toast/headless";
 
@@ -17,6 +19,8 @@ interface PlayerCredentials {
 type TAuthProvider = {
   allPlayers: Player[];
   playerInfo: Player | null;
+  setPlayerInfo: Dispatch<SetStateAction<Player | null>>;
+  setAllPlayers: Dispatch<SetStateAction<Player[]>>;
   postNewPlayer: (player: Omit<Player, "id">) => Promise<void>;
   logInAttempt: (credentials: PlayerCredentials) => Promise<void[]>;
 };
@@ -41,7 +45,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       id: maxId! + 1,
       ...player,
     };
-
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
     const playerData: Player[] = await Requests.findPlayer();
     const doubleSignUpChecker =
@@ -90,6 +93,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const resolveAll = [
         storePlayerInfo(playersFound[0]!),
         setPlayerInfo(playersFound[0]!),
+        setAllPlayers(playerData),
       ];
 
       return Promise.resolve(resolveAll);
@@ -104,6 +108,8 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       value={{
         allPlayers,
         playerInfo,
+        setPlayerInfo,
+        setAllPlayers,
         postNewPlayer,
         logInAttempt,
       }}

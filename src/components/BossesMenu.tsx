@@ -1,13 +1,9 @@
-import { type Dispatch, type SetStateAction } from "react";
-import { useGame } from "./Provider";
+import { useGame } from "./GameProvider";
 import Image from "next/image";
 
-export const BossesMenu = ({
-  setSelectedBoss,
-}: {
-  setSelectedBoss: Dispatch<SetStateAction<number>>;
-}) => {
-  const { bossData, activeComponent, setActiveComponent } = useGame();
+export const BossesMenu = () => {
+  const { bossData, activeComponent, setActiveComponent, setSelectedBoss } =
+    useGame();
 
   return (
     <>

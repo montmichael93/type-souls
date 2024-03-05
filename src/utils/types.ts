@@ -2,10 +2,19 @@ import { z } from "zod";
 
 const MessagesSchema = z.object({
   id: z.number(),
-  message: z.string(),
+  contents: z.string(),
 });
 
-export type Messages = z.infer<typeof MessagesSchema>;
+export type playerMessages = z.infer<typeof MessagesSchema>;
+
+const ReviewSchema = z.object({
+  id: z.number(),
+  playerName: z.string(),
+  level: z.number(),
+  content: z.string(),
+});
+
+export type playerReviews = z.infer<typeof ReviewSchema>;
 
 const TrackedWordSchema = z.object({
   correct: z.string(),
@@ -16,7 +25,7 @@ const TrackedWordSchema = z.object({
 export type TrackedWord = z.infer<typeof TrackedWordSchema>;
 
 const PlayerSchema = z.object({
-  id: z.number(),
+  id: z.string(),
   name: z.string(),
   level: z.number(),
   souls: z.number(),
@@ -47,6 +56,7 @@ const ActiveComponentSchema = z.union([
   z.literal("landing-page"),
   z.literal("sign-up"),
   z.literal("log-in"),
+  z.literal("review-page"),
   z.literal("abyss"),
   z.literal("main-menu"),
   z.literal("messages"),

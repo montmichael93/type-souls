@@ -4,7 +4,7 @@ import { AuthProvider } from "none/components/Authprovider";
 //import { GameBoard } from "../components/GameBoard";
 import { Game } from "none/components/Game";
 
-import { GameProvider } from "none/components/Provider";
+import { GameProvider } from "none/components/GameProvider";
 
 // Link from "next/link";
 

@@ -14,7 +14,7 @@ import { type TrackedWord } from "none/utils/types";
 import { type Frequency } from "tone/build/esm/core/type/Units";
 import Image from "next/image";
 import { type StaticImport } from "next/dist/shared/lib/get-img-props";
-import { useGame } from "./Provider";
+import { useGame } from "./GameProvider";
 
 const gameText = `123`;
 //const gameText = "abc def ghi";
@@ -22,7 +22,6 @@ const gameText = `123`;
 export const CombatScreen = ({
   correctCount,
   incorrectCount,
-  selectedBoss,
   didPlayerDie,
   didPlayerSurvive,
   setDidPlayerDie,
@@ -32,7 +31,6 @@ export const CombatScreen = ({
 }: {
   correctCount: number;
   incorrectCount: number;
-  selectedBoss: number;
   didPlayerDie: boolean;
   didPlayerSurvive: boolean;
   setDidPlayerDie: Dispatch<SetStateAction<boolean>>;
@@ -40,7 +38,8 @@ export const CombatScreen = ({
   setIncorrectCount: Dispatch<SetStateAction<number>>;
   setCorrectCount: Dispatch<SetStateAction<number>>;
 }) => {
-  const { bossData, activeComponent, setActiveComponent } = useGame();
+  const { bossData, activeComponent, selectedBoss, setActiveComponent } =
+    useGame();
   const sampler = UseSampler();
   const player = usePlayer();
   const [wordIndex, setWordIndex] = useState(0);
@@ -110,25 +109,23 @@ export const CombatScreen = ({
     );
   };
 
-  //const combatLocation = [`bg-Lodran`, `bg-Drangleic`, `bg-Lothric`];
-
   return (
     <>
       {activeComponent === "combat" && (
         <>
           <main
-            className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-cover bg-center px-24 ${bossData[selectedBoss]?.combatLocation}`}
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-cover bg-center px-24 ${bossData[selectedBoss!]?.combatLocation}`}
           >
             <div>
               <h1 className="translate-y-[-1rem] font-kode-mono text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]">
-                <span>{bossData[selectedBoss]?.name}</span>
+                <span>{bossData[selectedBoss!]?.name}</span>
               </h1>
             </div>
             <div>
               <div>
                 <Image
                   src={
-                    bossData[selectedBoss]
+                    bossData[selectedBoss!]
                       ?.combatImage as unknown as StaticImport
                   }
                   alt=""
