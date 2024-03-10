@@ -1,4 +1,8 @@
-import { type playerMessages, type Player, type playerReviews } from "./types";
+import {
+  type playerMessages,
+  type GamePlayers,
+  type playerReviews,
+} from "./types";
 
 export const baseUrl = "http://localhost:3000";
 
@@ -18,7 +22,7 @@ const findPlayer = async () => {
   });
 };
 
-const postNewPlayer = (player: Omit<Player, "id">) => {
+const postNewPlayer = (player: Omit<GamePlayers, "id">) => {
   return fetch(`${baseUrl}/players/`, {
     body: JSON.stringify(player),
     method: "POST",
@@ -75,7 +79,7 @@ const patchPlayerDead = (playerId: string) => {
 };
 
 const patchPlayerSurvived = (
-  player: Player,
+  player: GamePlayers,
   levelUp: number,
   soulsGained: number,
 ) => {

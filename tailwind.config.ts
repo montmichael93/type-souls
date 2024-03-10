@@ -10,8 +10,10 @@ export default {
         "kode-mono": ['"Kode Mono"', "monospace"],
       },
       backgroundImage: {
+        fireKeeperGreeting: "url(/fireKeeperGreeting.gif)",
         bonfire: "url(/bonfire.jpg)",
         bonfireTwo: "url(/bonfireTwo.jpg)",
+        bonfireThree: "url(/bonfireThree.gif)",
         Lodran: "url(/lodran.jpg)",
         Drangleic: "url(/drangleicCastle.jpg)",
         Lothric: "url(/lothric.png)",
@@ -21,6 +23,7 @@ export default {
         GwynDefeat: "url(/gwynDefeatImage.jpg)",
         NashandraDefeat: "url(/nashandraDefeatImage.jpg)",
         SoulOfCinderDefeat: "url(/soulOfCinderDefeatImage.png)",
+        fogGate: "url(/theFogGate.gif)",
       },
     },
   },

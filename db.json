@@ -12,7 +12,7 @@
     {
       "id": "c793",
       "name": "moemoekyun",
-      "level": 310,
+      "level": 550,
       "souls": 0,
       "email": "moe@gmail.com",
       "password": "123456",
@@ -44,6 +44,15 @@
       "email": "new@gmail.com",
       "password": "123",
       "leftReview": false
+    },
+    {
+      "id": "3bfb",
+      "name": "new player one",
+      "level": 0,
+      "souls": 0,
+      "email": "newplayer@gmail.com",
+      "password": "12345",
+      "leftReview": true
     }
   ],
   "messages": [
@@ -84,6 +93,12 @@
       "playerName": "moemoekyun",
       "level": 60,
       "content": "best game ever"
+    },
+    {
+      "id": "1246",
+      "playerName": "new player one",
+      "level": 0,
+      "content": "another test review"
     }
   ]
 }

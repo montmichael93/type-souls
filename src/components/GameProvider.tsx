@@ -4,7 +4,7 @@ import {
   type ActiveComponent,
   type playerMessages,
   type playerReviews,
-  type Player,
+  type GamePlayers,
 } from "none/utils/types";
 import { bossData } from "public/bosses-data";
 import {
@@ -17,8 +17,13 @@ import {
   useEffect,
 } from "react";
 import { useAuth } from "./Authprovider";
+import { usePlayer } from "none/utils/UsePlayer";
+import { type Sampler, type Player } from "tone";
+import { UseSampler } from "none/utils/UseSampler";
 
 type TGameProvider = {
+  player: Player | null;
+  sampler: Sampler | null;
   bossData: BossData[];
   activeComponent: ActiveComponent;
   playerMessages: playerMessages[];
@@ -35,7 +40,7 @@ type TGameProvider = {
   retrievePlayerReviews: () => Promise<playerReviews[]>;
   patchPlayerDead: (playerId: string) => Promise<void>;
   patchPlayerSurvived: (
-    playerProfile: Player,
+    playerProfile: GamePlayers,
     levelUpBy: number,
     soulsEarned: number,
   ) => Promise<void>;
@@ -44,6 +49,8 @@ type TGameProvider = {
 const GameContext = createContext<TGameProvider>({} as TGameProvider);
 
 export const GameProvider = ({ children }: { children: ReactNode }) => {
+  const player = usePlayer();
+  const sampler = UseSampler();
   const [activeComponent, setActiveComponent] =
     useState<ActiveComponent>("landing-page");
   const [playerMessages, setPlayerMessages] = useState<playerMessages[]>([]);
@@ -121,16 +128,14 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const patchPlayerReview = async (playerId: string) => {
-    setAllPlayers((allPlayers) =>
+    setAllPlayers((allPlayers: GamePlayers[]) =>
       allPlayers.map((player) =>
         player.id === playerId ? { ...player, leftReview: true } : player,
       ),
     );
-
     setPlayerInfo(
       (playerInfo) => playerInfo && { ...playerInfo, leftReview: true },
     );
-
     await Requests.patchPlayerReview(playerId)
       .then((response) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -149,9 +154,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         player.id === playerId ? { ...player, souls: 0 } : player,
       ),
     );
-
     setPlayerInfo((playerInfo) => playerInfo && { ...playerInfo, souls: 0 });
-
     await Requests.patchPlayerDead(playerId)
       .then((response) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -165,7 +168,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   };
 
   const patchPlayerSurvived = async (
-    playerProfile: Player,
+    playerProfile: GamePlayers,
     levelUpBy: number,
     soulsEarned: number,
   ) => {
@@ -180,7 +183,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
           : player,
       ),
     );
-
     setPlayerInfo(
       (playerInfo) =>
         playerInfo && {
@@ -189,7 +191,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
           level: playerInfo && playerInfo?.level + levelUpBy,
         },
     );
-
     await Requests.patchPlayerSurvived(playerProfile, levelUpBy, soulsEarned)
       .then((response) => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
@@ -205,6 +206,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   return (
     <GameContext.Provider
       value={{
+        player,
+        sampler,
         bossData,
         activeComponent,
         playerMessages,

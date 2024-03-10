@@ -10,16 +10,11 @@ import { CombatResults } from "./CombatResults";
 import { ReviewPage } from "./LeaveAReview";
 
 export const Game = () => {
-  const { activeComponent, playerMessages, setActiveComponent } = useGame();
-
-  const [isBonFireLit, setIsBonFireLit] = useState(false);
-  //const [selectedBoss, setSelectedBoss] = useState<number | null>(null);
+  const { activeComponent } = useGame();
   const [didPlayerDie, setDidPlayerDie] = useState(false);
   const [didPlayerSurvive, setDidPlayerSurvive] = useState(false);
   const [incorrectCount, setIncorrectCount] = useState(0);
   const [correctCount, setCorrectCount] = useState(0);
-
-  const setLargeText = !isBonFireLit ? "" : "Type Souls";
 
   const revealSignUpAndLogIn =
     activeComponent === "landing-page" ||
@@ -27,42 +22,19 @@ export const Game = () => {
     activeComponent === "log-in" ||
     activeComponent === "review-page";
 
+  const revealMainMenu = activeComponent === "main-menu" || "abyss";
+
   return (
     <>
       {revealSignUpAndLogIn && <LogInSignUp />}
 
-      {activeComponent === "abyss" && (
-        <main
-          className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-black bg-cover bg-center px-24`}
-        >
-          <div>
-            <h1 className="translate-y-[-1rem] font-kode-mono text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]">
-              <span>{setLargeText}</span>
-            </h1>
-          </div>
-
-          <div
-            hidden={isBonFireLit}
-            className="border-[0.1rem] border-solid border-[white] p-4 text-white"
-            onClick={() => {
-              setIsBonFireLit(true);
-              setActiveComponent("main-menu");
-            }}
-          >
-            <button hidden={isBonFireLit}>Click to light bonfire</button>
-          </div>
-        </main>
-      )}
-
-      {activeComponent === "main-menu" && <MainMenu />}
+      {revealMainMenu && <MainMenu />}
 
       {activeComponent === "boss-menu" && <BossesMenu />}
 
       {activeComponent === "leaderBoard" && <LeaderBoard />}
 
-      {activeComponent === "messages" && (
-        <Messages playerMessages={playerMessages} />
-      )}
+      {activeComponent === "messages" && <Messages />}
 
       {activeComponent === "review" && <ReviewPage />}
 

@@ -34,7 +34,7 @@ const PlayerSchema = z.object({
   leftReview: z.boolean(),
 });
 
-export type Player = z.infer<typeof PlayerSchema>;
+export type GamePlayers = z.infer<typeof PlayerSchema>;
 
 const BossDataSchema = z.object({
   id: z.number(),
@@ -46,7 +46,8 @@ const BossDataSchema = z.object({
   combatImage: z.string(),
   victoryImage: z.string(),
   defeatImage: z.string(),
-  bossText: z.string(),
+  bossText: z.number(),
+  lore: z.string(),
   bossThemeMusic: z.string(),
 });
 

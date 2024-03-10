@@ -18,7 +18,7 @@ export const LogInSignUp = () => {
 
   return (
     <>
-      <main className="flex flex-col items-center">
+      <main className="flex flex-col items-center bg-black">
         <div>
           <h1 className="font-kode-mono text-[4rem]">Type Souls</h1>
         </div>
@@ -104,7 +104,7 @@ export const LogInSignUp = () => {
               <div>Email</div>
               <input
                 name="Email"
-                type="text"
+                type="email"
                 value={emailInput}
                 className="border-[0.1rem] border-[red] text-black"
                 onChange={(e) => {

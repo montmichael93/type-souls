@@ -1,5 +1,5 @@
 import { Requests } from "none/utils/requests";
-import { type Player } from "none/utils/types";
+import { type GamePlayers } from "none/utils/types";
 import {
   type ReactNode,
   createContext,
@@ -17,19 +17,19 @@ interface PlayerCredentials {
 }
 
 type TAuthProvider = {
-  allPlayers: Player[];
-  playerInfo: Player | null;
-  setPlayerInfo: Dispatch<SetStateAction<Player | null>>;
-  setAllPlayers: Dispatch<SetStateAction<Player[]>>;
-  postNewPlayer: (player: Omit<Player, "id">) => Promise<void>;
+  allPlayers: GamePlayers[];
+  playerInfo: GamePlayers | null;
+  setPlayerInfo: Dispatch<SetStateAction<GamePlayers | null>>;
+  setAllPlayers: Dispatch<SetStateAction<GamePlayers[]>>;
+  postNewPlayer: (player: Omit<GamePlayers, "id">) => Promise<void>;
   logInAttempt: (credentials: PlayerCredentials) => Promise<void[]>;
 };
 
 const AuthContext = createContext<TAuthProvider>({} as TAuthProvider);
 
 export const AuthProvider = ({ children }: { children: ReactNode }) => {
-  const [allPlayers, setAllPlayers] = useState<Player[]>([]);
-  const [playerInfo, setPlayerInfo] = useState<Player | null>(null);
+  const [allPlayers, setAllPlayers] = useState<GamePlayers[]>([]);
+  const [playerInfo, setPlayerInfo] = useState<GamePlayers | null>(null);
 
   useEffect(() => {
     Requests.getAllPlayers()
@@ -39,17 +39,17 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       });
   }, []);
 
-  const postNewPlayer = async (player: Omit<Player, "id">) => {
+  const postNewPlayer = async (player: Omit<GamePlayers, "id">) => {
     const maxId = allPlayers.map((player) => player.id).slice(-1)[0];
-    const newPlayer: Player = {
+    const newPlayer: GamePlayers = {
       id: maxId! + 1,
       ...player,
     };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-    const playerData: Player[] = await Requests.findPlayer();
+    const playerData: GamePlayers[] = await Requests.findPlayer();
     const doubleSignUpChecker =
       playerData.filter(
-        (stored: Player) =>
+        (stored: GamePlayers) =>
           stored.name === player.name || stored.email === player.email,
       ).length === 0;
 
@@ -71,18 +71,19 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return Promise.reject(errorMessage);
     }
   };
-
+  /*
   const storePlayerInfo = (playerObject: Player) => {
     const infoToStore = JSON.stringify(playerObject);
     localStorage.setItem("playerThatIsLoggedIn", infoToStore);
   };
+*/
 
   const logInAttempt = async (credentials: PlayerCredentials) => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
-      const playerData: Player[] = await Requests.findPlayer();
+      const playerData: GamePlayers[] = await Requests.findPlayer();
       const playersFound = playerData.filter(
-        (player: Player) =>
+        (player: GamePlayers) =>
           player.email === credentials.email &&
           player.password === credentials.password,
       );
@@ -91,7 +92,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const resolveAll = [
-        storePlayerInfo(playersFound[0]!),
+        //storePlayerInfo(playersFound[0]!),
         setPlayerInfo(playersFound[0]!),
         setAllPlayers(playerData),
       ];

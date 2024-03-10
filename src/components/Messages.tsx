@@ -4,12 +4,8 @@ import { useGame } from "./GameProvider";
 import { type playerMessages } from "none/utils/types";
 import { useState } from "react";
 
-export const Messages = ({
-  playerMessages,
-}: {
-  playerMessages: playerMessages[];
-}) => {
-  const { setActiveComponent, postNewMessage } = useGame();
+export const Messages = () => {
+  const { playerMessages, setActiveComponent, postNewMessage } = useGame();
   const [messageInput, setMessageInput] = useState("");
 
   return (

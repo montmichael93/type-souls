@@ -7,8 +7,15 @@ import darkSoulsOneTheme from "../../public/darkSoulsOnetheme.mp3";
 import darkSoulsTwoTheme from "../../public/darkSoulsTwotheme.mp3";
 // @ts-expect-error darkSoulsThreeTheme sound not registering with ts
 import darkSoulsThreeTheme from "../../public/darkSoulsThreetheme.mp3";
+// @ts-expect-error slaveKnight sound not registering with ts
+import slaveKnight from "../../public/slaveKnight.mp3";
 
-const totalThemes = [darkSoulsOneTheme, darkSoulsTwoTheme, darkSoulsThreeTheme];
+const totalThemes = [
+  darkSoulsOneTheme,
+  darkSoulsTwoTheme,
+  darkSoulsThreeTheme,
+  slaveKnight,
+];
 
 const selectThemeAtRandom = totalThemes[
   Math.floor(Math.random() * 3)
@@ -20,7 +27,7 @@ export const usePlayer = () => {
   useEffect(() => {
     const playerInstance = new Player(
       // eslint-disable-next-line @typescript-eslint/no-unsafe-argument
-      selectThemeAtRandom as never,
+      slaveKnight as never,
 
       () => {
         setPlayer(playerInstance);

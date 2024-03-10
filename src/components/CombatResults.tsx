@@ -1,4 +1,4 @@
-/* eslint-disable @typescript-eslint/no-unnecessary-type-assertion */
+/* eslint-disable @typescript-eslint/non-nullable-type-assertion-style */
 import { type Dispatch, type SetStateAction } from "react";
 import { useGame } from "./GameProvider";
 import { useAuth } from "./Authprovider";
@@ -6,7 +6,6 @@ import { useAuth } from "./Authprovider";
 export const CombatResults = ({
   didPlayerDie,
   didPlayerSurvive,
-
   setCorrectCount,
   setIncorrectCount,
   setDidPlayerDie,
@@ -21,6 +20,7 @@ export const CombatResults = ({
 }) => {
   const { playerInfo } = useAuth();
   const {
+    sampler,
     bossData,
     selectedBoss,
     setSelectedBoss,
@@ -29,38 +29,13 @@ export const CombatResults = ({
     patchPlayerSurvived,
   } = useGame();
 
-  const levelIncrease =
-    bossData && selectedBoss && bossData[selectedBoss]?.levelUp;
-
-  const soulsIncrease =
-    bossData && selectedBoss && bossData[selectedBoss]?.reward;
-
-  console.log(playerInfo);
-
-  const deathScreen = [
-    `bg-GwynDefeat`,
-    `bg-NashandraDefeat`,
-    `bg-SoulOfCinderDefeat`,
-  ];
-
-  const victoryScreen = [
-    `bg-GwynVictory`,
-    `bg-NashandraVictory`,
-    `bg-SoulOfCinderVictory`,
-  ];
-
   return (
     <>
       {didPlayerDie && (
         <>
           <main
-            className={` flex min-h-screen flex-col items-center justify-center border-r-2 ${deathScreen[selectedBoss!]} bg-cover bg-center px-24`}
-            /*
-            style={
-              {
-                backgroundImage: `url(${deathScreen[selectedBoss]})`
-              }
-            }*/
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-cover bg-center px-24`}
+            style={{ backgroundImage: bossData[selectedBoss!]?.defeatImage }}
           >
             <div
               className=" place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 font-kode-mono text-red-900"
@@ -91,7 +66,8 @@ export const CombatResults = ({
       {didPlayerSurvive && (
         <>
           <main
-            className={` flex min-h-screen flex-col items-center justify-center border-r-2 ${victoryScreen[selectedBoss!]} bg-cover bg-center px-24`}
+            className={` flex min-h-screen flex-col items-center justify-center border-r-2  bg-cover bg-center px-24`}
+            style={{ backgroundImage: bossData[selectedBoss!]?.victoryImage }}
           >
             <div
               className=" translate-y-[-10rem] transform place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 font-kode-mono text-red-900"
@@ -99,8 +75,8 @@ export const CombatResults = ({
                 playerInfo &&
                   patchPlayerSurvived(
                     playerInfo,
-                    bossData[selectedBoss!].levelUp,
-                    bossData[selectedBoss!].reward,
+                    bossData[selectedBoss!]?.levelUp as number,
+                    bossData[selectedBoss!]?.reward as number,
                   )
                     .then(() => {
                       setSelectedBoss(null);
@@ -112,9 +88,6 @@ export const CombatResults = ({
                     .catch((e) => {
                       console.log(e);
                     });
-
-                console.log(levelIncrease);
-                console.log(soulsIncrease);
               }}
             >
               <button>Return to Bonfire</button>
