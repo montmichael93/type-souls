@@ -20,17 +20,23 @@ export const LogInSignUp = () => {
     <>
       <main className="flex flex-col items-center bg-black">
         <div>
-          <h1 className="font-kode-mono text-[4rem]">Type Souls</h1>
+          <h1 className="font-kode-mono text-[4rem] text-white">Type Souls</h1>
         </div>
 
         <div className="flex flex-col gap-1">
-          <Image src={"/fireKeeper.png"} height={300} width={300} alt="" />
+          <Image
+            className="self-center"
+            src={"/fireKeeper.png"}
+            height={300}
+            width={300}
+            alt=""
+          />
 
           {activeComponent === "landing-page" && (
             <>
               <div className="flex justify-between font-kode-mono text-indigo-700">
                 <div
-                  className="border-[0.1rem] border-solid border-[black] bg-black p-4"
+                  className="border-[0.1rem] border-solid border-[darkred] bg-black p-4"
                   onClick={() => {
                     setActiveComponent("log-in");
                   }}
@@ -38,7 +44,7 @@ export const LogInSignUp = () => {
                   <button>Log In</button>
                 </div>
                 <div
-                  className="border-[0.1rem] border-solid border-[black] bg-black p-4"
+                  className="border-[0.1rem] border-solid border-[darkred] bg-black p-4"
                   onClick={() => {
                     setActiveComponent("sign-up");
                   }}
@@ -48,7 +54,7 @@ export const LogInSignUp = () => {
               </div>
 
               <span
-                className="flex self-center font-kode-mono text-indigo-700"
+                className="flex self-center border-[0.1rem] border-solid border-[darkred] p-2 font-kode-mono text-indigo-700"
                 onClick={() => {
                   retrievePlayerReviews()
                     .then((reviews) => {
@@ -68,7 +74,7 @@ export const LogInSignUp = () => {
 
           {activeComponent === "sign-up" && (
             <form
-              className="bg-black text-center font-kode-mono text-white"
+              className="bg-slate-800 text-center font-kode-mono text-white"
               onSubmit={(e) => {
                 e.preventDefault();
                 postNewPlayer({
@@ -95,7 +101,7 @@ export const LogInSignUp = () => {
                 name="name"
                 type="text"
                 value={nameInput}
-                className="border-[0.1rem] border-[red] text-black"
+                className="border-[0.1rem] border-[darkred] text-black"
                 onChange={(e) => {
                   setNameInput(e.target.value);
                 }}
@@ -106,7 +112,7 @@ export const LogInSignUp = () => {
                 name="Email"
                 type="email"
                 value={emailInput}
-                className="border-[0.1rem] border-[red] text-black"
+                className="border-[0.1rem] border-[darkred] text-black"
                 onChange={(e) => {
                   setEmailInput(e.target.value);
                 }}
@@ -117,7 +123,7 @@ export const LogInSignUp = () => {
                 name="password"
                 type="password"
                 value={passwordInput}
-                className="border-[0.1rem] border-[red] text-black"
+                className="border-[0.1rem] border-[darkred] text-black"
                 onChange={(e) => {
                   setPasswordInput(e.target.value);
                 }}
@@ -142,7 +148,7 @@ export const LogInSignUp = () => {
 
           {activeComponent === "log-in" && (
             <form
-              className="bg-black text-center font-kode-mono text-white"
+              className="bg-slate-800 text-center font-kode-mono text-white"
               onSubmit={(e) => {
                 e.preventDefault();
                 logInAttempt({
@@ -164,7 +170,7 @@ export const LogInSignUp = () => {
                 name="Email"
                 type="text"
                 value={emailInput}
-                className="border-[0.1rem] border-[red] text-black"
+                className="border-[0.1rem] border-[darkred] text-black"
                 onChange={(e) => {
                   setEmailInput(e.target.value);
                 }}
@@ -175,7 +181,7 @@ export const LogInSignUp = () => {
                 name="password"
                 type="password"
                 value={passwordInput}
-                className="border-[0.1rem] border-[red] text-black"
+                className="border-[0.1rem] border-[darkred] text-black"
                 onChange={(e) => {
                   setPasswordInput(e.target.value);
                 }}
@@ -202,10 +208,13 @@ export const LogInSignUp = () => {
           {activeComponent === "review-page" &&
             playerReviews.map((review) => (
               <>
-                <div key={review.id} className="bg-slate-800 text-white">
+                <div
+                  key={review.id}
+                  className="bg-slate-800 text-center text-white"
+                >
                   <h2 className="font-kode-mono">{review.playerName}</h2>
                   <h2 className="font-kode-mono">Level: {review.level}</h2>
-                  <p className="font=kode-mono"> {review.content}</p>
+                  <p className="font=kode-mono"> {review.contents}</p>
                 </div>
               </>
             ))}

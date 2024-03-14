@@ -16,17 +16,13 @@ export const Word = ({
   trackedWords: TrackedWord[];
 }) => {
   const isActive = index === activeIndex;
-  //const isActive = false;
+
   const trackedWord = trackedWords[index]!;
 
   const correctToIndex = getCorrectToIndex({
     correct: trackedWord.correct,
     current: trackedWord.current,
   });
-  /*
-  if (index === activeIndex) {
-    console.log({ ...trackedWord });
-  }*/
 
   const renderWord = `${trackedWord.current}${trackedWord.correct.slice(
     trackedWord.current.length,

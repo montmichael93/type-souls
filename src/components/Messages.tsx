@@ -65,7 +65,7 @@ export const Messages = () => {
       </form>
 
       <div className="flex flex-col gap-5 text-[1.5rem] text-black">
-        {playerMessages.map((player: playerMessages) => {
+        {playerMessages.slice(-5).map((player: playerMessages) => {
           return (
             <div
               key={player.id}

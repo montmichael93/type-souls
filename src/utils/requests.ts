@@ -60,7 +60,7 @@ const postNewReview = (review: Omit<playerReviews, "id">) => {
   }).then((response) => response.json());
 };
 
-const patchPlayerReview = (playerId: string) => {
+const patchPlayerReview = (playerId: number) => {
   return fetch(`${baseUrl}/players/${playerId}`, {
     body: JSON.stringify({ leftReview: true }),
     method: "PATCH",
@@ -68,7 +68,7 @@ const patchPlayerReview = (playerId: string) => {
   }).then((response) => response.json());
 };
 
-const patchPlayerDead = (playerId: string) => {
+const patchPlayerDead = (playerId: number) => {
   return fetch(`${baseUrl}/players/${playerId}`, {
     body: JSON.stringify({ souls: 0 }),
     method: "PATCH",

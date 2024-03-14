@@ -2,6 +2,7 @@
 import { useGame } from "./GameProvider";
 import { useAuth } from "./Authprovider";
 import { useState } from "react";
+import * as ls from "local-storage";
 
 export const MainMenu = () => {
   const { player } = useGame();
@@ -21,10 +22,6 @@ export const MainMenu = () => {
         <main
           className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-black bg-cover bg-center px-24`}
         >
-          <div>
-            <h1 className="translate-y-[-1rem] font-kode-mono text-5xl font-extrabold tracking-tight text-red-900 sm:text-[5rem]"></h1>
-          </div>
-
           <div
             className="border-[0.1rem] border-solid border-[white] p-4 text-white"
             onClick={() => {
@@ -41,7 +38,7 @@ export const MainMenu = () => {
       {activeComponent === "main-menu" && (
         <main
           //onMouseEnter={playMusic}
-          className={` bg-bonfireThree flex min-h-screen flex-col items-center justify-center border-r-2 bg-cover bg-center px-24`}
+          className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-bonfireThree bg-cover bg-center px-24`}
         >
           <div>
             <h1 className="translate-y-[-1rem] text-center font-kode-mono text-5xl font-extrabold tracking-tight text-white sm:text-[5rem]">
@@ -110,6 +107,7 @@ export const MainMenu = () => {
               setIsBonFireLit(false);
               setActiveComponent("landing-page");
               player?.stop();
+              ls.clear();
             }}
           >
             <button>Log Out</button>

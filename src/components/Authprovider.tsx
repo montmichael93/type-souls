@@ -10,6 +10,7 @@ import {
   type SetStateAction,
 } from "react";
 import toast from "react-hot-toast/headless";
+import { set } from "local-storage";
 
 interface PlayerCredentials {
   email: string;
@@ -41,8 +42,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const postNewPlayer = async (player: Omit<GamePlayers, "id">) => {
     const maxId = allPlayers.map((player) => player.id).slice(-1)[0];
+    console.log(maxId);
+    const newId = maxId! + 1;
     const newPlayer: GamePlayers = {
-      id: maxId! + 1,
+      id: newId,
       ...player,
     };
     // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -58,9 +61,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       await Requests.postNewPlayer(player)
         .then(() => {
           setAllPlayers(addTheNewPlayer);
-        })
-        .then(() => {
-          toast.success("New player added!");
+          return Promise.resolve(toast.success("New player added!"));
         })
         .catch((error) => {
           alert(error);
@@ -71,12 +72,10 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       return Promise.reject(errorMessage);
     }
   };
-  /*
-  const storePlayerInfo = (playerObject: Player) => {
-    const infoToStore = JSON.stringify(playerObject);
-    localStorage.setItem("playerThatIsLoggedIn", infoToStore);
+
+  const storeTheLoggedInPlayer = (playerObject: GamePlayers) => {
+    set<GamePlayers>("playerThatIsLoggedIn", playerObject);
   };
-*/
 
   const logInAttempt = async (credentials: PlayerCredentials) => {
     try {
@@ -92,9 +91,9 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       }
 
       const resolveAll = [
-        //storePlayerInfo(playersFound[0]!),
         setPlayerInfo(playersFound[0]!),
         setAllPlayers(playerData),
+        storeTheLoggedInPlayer(playersFound[0]!),
       ];
 
       return Promise.resolve(resolveAll);

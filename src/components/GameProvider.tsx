@@ -20,6 +20,8 @@ import { useAuth } from "./Authprovider";
 import { usePlayer } from "none/utils/UsePlayer";
 import { type Sampler, type Player } from "tone";
 import { UseSampler } from "none/utils/UseSampler";
+import * as ls from "local-storage";
+import { set } from "local-storage";
 
 type TGameProvider = {
   player: Player | null;
@@ -36,9 +38,9 @@ type TGameProvider = {
   retrievePlayerMessages: () => Promise<playerMessages[]>;
   postNewMessage: (newMessage: Omit<playerMessages, "id">) => Promise<void>;
   postNewReview: (newReview: Omit<playerReviews, "id">) => Promise<void>;
-  patchPlayerReview: (playerId: string) => Promise<void>;
+  patchPlayerReview: (playerId: number) => Promise<void>;
   retrievePlayerReviews: () => Promise<playerReviews[]>;
-  patchPlayerDead: (playerId: string) => Promise<void>;
+  patchPlayerDead: (playerId: number) => Promise<void>;
   patchPlayerSurvived: (
     playerProfile: GamePlayers,
     levelUpBy: number,
@@ -52,9 +54,10 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const player = usePlayer();
   const sampler = UseSampler();
   const [activeComponent, setActiveComponent] =
-    useState<ActiveComponent>("landing-page");
+    useState<ActiveComponent>("loading");
+
   const [playerMessages, setPlayerMessages] = useState<playerMessages[]>([]);
-  const { allPlayers, setPlayerInfo, setAllPlayers } = useAuth();
+  const { allPlayers, setPlayerInfo, playerInfo, setAllPlayers } = useAuth();
   const [playerReviews, setPlayerReviews] = useState<playerReviews[]>([]);
   const [selectedBoss, setSelectedBoss] = useState<number | null>(null);
 
@@ -74,6 +77,12 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       });
   }, []);
 
+  useEffect(() => {
+    const playerStorage = ls.get("playerThatIsLoggedIn");
+    const determineStorage = playerStorage ? "main-menu" : "landing-page";
+    setActiveComponent(determineStorage);
+  }, []);
+
   const retrievePlayerMessages = async () => {
     try {
       // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
@@ -87,10 +96,12 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
   const postNewMessage = async (newMessage: Omit<playerMessages, "id">) => {
     const maxId = playerMessages.map((message) => message.id).slice(-1)[0];
+    console.log(maxId);
     const newPlayerMessage: playerMessages = {
       id: maxId! + 1,
       ...newMessage,
     };
+    console.log(newPlayerMessage.id);
     const addTheNewMessage = [...playerMessages, newPlayerMessage];
     await Requests.postNewMessage(newMessage)
       .then(() => {
@@ -127,20 +138,30 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  const patchPlayerReview = async (playerId: string) => {
+  const patchPlayerReview = async (playerId: number) => {
     setAllPlayers((allPlayers: GamePlayers[]) =>
       allPlayers.map((player) =>
         player.id === playerId ? { ...player, leftReview: true } : player,
       ),
     );
-    setPlayerInfo(
-      (playerInfo) => playerInfo && { ...playerInfo, leftReview: true },
-    );
+    setPlayerInfo(playerInfo && { ...playerInfo, leftReview: true });
+
     await Requests.patchPlayerReview(playerId)
       .then((response) => {
+        playerInfo &&
+          set<GamePlayers>("playerThatIsLoggedIn", {
+            ...playerInfo,
+            leftReview: true,
+          });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (!response.ok) {
           setAllPlayers(allPlayers);
+          //playerInfo &&
+          //set<GamePlayers>("playerThatIsLoggedIn", {
+          //...playerInfo,
+          //leftReview: false,
+          //});
+          alert(response);
         } else return;
       })
       .catch((error) => {
@@ -148,7 +169,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       });
   };
 
-  const patchPlayerDead = async (playerId: string) => {
+  const patchPlayerDead = async (playerId: number) => {
     setAllPlayers((allPlayers) =>
       allPlayers.map((player) =>
         player.id === playerId ? { ...player, souls: 0 } : player,
@@ -157,9 +178,17 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     setPlayerInfo((playerInfo) => playerInfo && { ...playerInfo, souls: 0 });
     await Requests.patchPlayerDead(playerId)
       .then((response) => {
+        playerInfo &&
+          set<GamePlayers>("playerThatIsLoggedIn", { ...playerInfo, souls: 0 });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (!response.ok) {
           setAllPlayers(allPlayers);
+          //playerInfo && set<GamePlayers>("playerThatIsLoggedIn", playerInfo);
+          // playerInfo &&
+          // set<GamePlayers>("playerThatIsLoggedIn", {
+          // ...playerInfo,
+          //souls: playerInfo.souls,
+          //});
         } else return;
       })
       .catch((error) => {
@@ -193,9 +222,21 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     );
     await Requests.patchPlayerSurvived(playerProfile, levelUpBy, soulsEarned)
       .then((response) => {
+        playerInfo &&
+          set<GamePlayers>("playerThatIsLoggedIn", {
+            ...playerInfo,
+            level: playerInfo.level + levelUpBy,
+            souls: playerInfo.souls + soulsEarned,
+          });
         // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
         if (!response.ok) {
           setAllPlayers(allPlayers);
+          //playerInfo &&
+          //set<GamePlayers>("playerThatIsLoggedIn", {
+          //...playerInfo,
+          //level: playerInfo.level,
+          //souls: playerInfo.souls,
+          // });
         } else return;
       })
       .catch((error) => {

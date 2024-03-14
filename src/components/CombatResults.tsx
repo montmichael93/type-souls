@@ -2,6 +2,7 @@
 import { type Dispatch, type SetStateAction } from "react";
 import { useGame } from "./GameProvider";
 import { useAuth } from "./Authprovider";
+import { type Frequency } from "tone/build/esm/core/type/Units";
 
 export const CombatResults = ({
   didPlayerDie,
@@ -20,6 +21,7 @@ export const CombatResults = ({
 }) => {
   const { playerInfo } = useAuth();
   const {
+    player,
     sampler,
     bossData,
     selectedBoss,
@@ -43,11 +45,15 @@ export const CombatResults = ({
                 playerInfo &&
                   patchPlayerDead(playerInfo?.id)
                     .then(() => {
-                      setSelectedBoss(-1);
+                      setSelectedBoss(null);
                       setActiveComponent("main-menu");
                       setDidPlayerDie(false);
                       setCorrectCount(0);
                       setIncorrectCount(0);
+                      sampler?.triggerRelease(
+                        bossData[selectedBoss!]?.bossThemeMusic as Frequency,
+                      );
+                      player?.start();
                     })
                     .catch((e) => {
                       console.log(e);
@@ -70,7 +76,7 @@ export const CombatResults = ({
             style={{ backgroundImage: bossData[selectedBoss!]?.victoryImage }}
           >
             <div
-              className=" translate-y-[-10rem] transform place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 font-kode-mono text-red-900"
+              className="transform place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 font-kode-mono text-red-900"
               onClick={() => {
                 playerInfo &&
                   patchPlayerSurvived(
@@ -84,7 +90,13 @@ export const CombatResults = ({
                       setDidPlayerSurvive(false);
                       setCorrectCount(0);
                       setIncorrectCount(0);
+
+                      sampler?.triggerRelease(
+                        bossData[selectedBoss!]?.bossThemeMusic as Frequency,
+                      );
+                      player?.start();
                     })
+
                     .catch((e) => {
                       console.log(e);
                     });
@@ -93,7 +105,7 @@ export const CombatResults = ({
               <button>Return to Bonfire</button>
             </div>
 
-            <div className="text-[10rem] text-[darkred]">
+            <div className="text-[8rem] text-[darkred]">
               <h1>Victory Achieved</h1>
             </div>
           </main>

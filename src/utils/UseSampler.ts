@@ -19,6 +19,8 @@ import GwynTheme from "../../public/GwynLordOfCinder.mp3";
 import NashandraTheme from "../../public/QueenOfDrangleic.mp3";
 // @ts-expect-error soul of cinder theme is not registering with ts
 import SoulsOfCinderTheme from "../../public/soulOfCinder.mp3";
+// @ts-expect-error youDied is not registering with ts
+import youDied from "../../public/youDied.mp3";
 
 export const UseSampler = () => {
   const [sampler, setSampler] = useState<Sampler | null>(null);

@@ -11,7 +11,7 @@ const ReviewSchema = z.object({
   id: z.number(),
   playerName: z.string(),
   level: z.number(),
-  content: z.string(),
+  contents: z.string(),
 });
 
 export type playerReviews = z.infer<typeof ReviewSchema>;
@@ -25,7 +25,7 @@ const TrackedWordSchema = z.object({
 export type TrackedWord = z.infer<typeof TrackedWordSchema>;
 
 const PlayerSchema = z.object({
-  id: z.string(),
+  id: z.number(),
   name: z.string(),
   level: z.number(),
   souls: z.number(),
@@ -54,6 +54,7 @@ const BossDataSchema = z.object({
 export type BossData = z.infer<typeof BossDataSchema>;
 
 const ActiveComponentSchema = z.union([
+  z.literal("loading"),
   z.literal("landing-page"),
   z.literal("sign-up"),
   z.literal("log-in"),

@@ -63,16 +63,9 @@ export const CombatScreen = ({
       !didPlayerDie
     ) {
       if (average > Math.round(Math.random() * 30) + 70) {
-        sampler?.triggerRelease(
-          bossData[selectedBoss!]?.bossThemeMusic as Frequency,
-        );
-        sampler?.triggerAttack("D1");
         setDidPlayerSurvive(true);
         setActiveComponent("combat-outcome");
       } else {
-        sampler?.triggerRelease(
-          bossData[selectedBoss!]?.bossThemeMusic as Frequency,
-        );
         setDidPlayerDie(true);
         setActiveComponent("combat-outcome");
       }
@@ -167,7 +160,6 @@ export const CombatScreen = ({
               className="flex h-44 w-full flex-wrap bg-slate-800 p-3 text-xl text-slate-200 opacity-50 "
               onClick={() => {
                 setEngagedInCombat(true);
-                //inputRef.current?.focus();
               }}
             >
               {gameText.split(" ").map((_word, index) => (
