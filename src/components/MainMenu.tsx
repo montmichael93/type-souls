@@ -3,6 +3,7 @@ import { useGame } from "./GameProvider";
 import { useAuth } from "./Authprovider";
 import { useState } from "react";
 import * as ls from "local-storage";
+import toast from "react-hot-toast";
 
 export const MainMenu = () => {
   const { player } = useGame();
@@ -27,7 +28,11 @@ export const MainMenu = () => {
             onClick={() => {
               setIsBonFireLit(!isBonFireLit);
               setActiveComponent("main-menu");
-              player?.start();
+              toast.success("Welcome Home Ashen One", {
+                icon: "❤️‍🔥",
+                style: { background: "#333", color: "#fff" },
+              }),
+                player?.start();
             }}
           >
             <button>Click to light bonfire</button>

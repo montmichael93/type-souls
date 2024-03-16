@@ -73,7 +73,7 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         console.log(error);
       });
     const playerStorage = ls.get("playerThatIsLoggedIn");
-    const determineStorage = playerStorage ? "main-menu" : "landing-page";
+    const determineStorage = playerStorage ? "abyss" : "landing-page";
     setActiveComponent(determineStorage);
   }, []);
 

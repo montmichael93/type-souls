@@ -105,8 +105,7 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
         setPlayerInfo(playersFound[0]!),
         setAllPlayers(playerData),
         storeTheLoggedInPlayer(playersFound[0]!),
-        toast.success("Welcome Home Ashen One", {
-          icon: "❤️‍🔥",
+        toast.success("Log In successful", {
           style: { background: "#333", color: "#fff" },
         }),
       ];
