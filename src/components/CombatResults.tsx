@@ -90,7 +90,6 @@ export const CombatResults = ({
                       setDidPlayerSurvive(false);
                       setCorrectCount(0);
                       setIncorrectCount(0);
-
                       sampler?.triggerRelease(
                         bossData[selectedBoss!]?.bossThemeMusic as Frequency,
                       );

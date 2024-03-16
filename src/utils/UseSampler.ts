@@ -45,6 +45,7 @@ export const UseSampler = () => {
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
         B3: SoulsOfCinderTheme,
         // eslint-disable-next-line @typescript-eslint/no-unsafe-assignment
+        D1: youDied,
       },
       {
         onload: () => {

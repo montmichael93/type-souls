@@ -67,6 +67,7 @@ export const CombatScreen = ({
         setActiveComponent("combat-outcome");
       } else {
         setDidPlayerDie(true);
+        sampler?.triggerAttack("D1");
         setActiveComponent("combat-outcome");
       }
     }

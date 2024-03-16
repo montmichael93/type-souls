@@ -37,7 +37,6 @@ export const MainMenu = () => {
 
       {activeComponent === "main-menu" && (
         <main
-          //onMouseEnter={playMusic}
           className={` flex min-h-screen flex-col items-center justify-center border-r-2 bg-bonfireThree bg-cover bg-center px-24`}
         >
           <div>

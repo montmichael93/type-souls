@@ -22,6 +22,7 @@ import { type Sampler, type Player } from "tone";
 import { UseSampler } from "none/utils/UseSampler";
 import * as ls from "local-storage";
 import { set } from "local-storage";
+import toast from "react-hot-toast";
 
 type TGameProvider = {
   player: Player | null;
@@ -55,7 +56,6 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
   const sampler = UseSampler();
   const [activeComponent, setActiveComponent] =
     useState<ActiveComponent>("loading");
-
   const [playerMessages, setPlayerMessages] = useState<playerMessages[]>([]);
   const { allPlayers, setPlayerInfo, playerInfo, setAllPlayers } = useAuth();
   const [playerReviews, setPlayerReviews] = useState<playerReviews[]>([]);
@@ -67,17 +67,11 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  useEffect(() => {
     Requests.getAllReviews()
       .then(setPlayerReviews)
       .catch((error) => {
         console.log(error);
       });
-  }, []);
-
-  useEffect(() => {
     const playerStorage = ls.get("playerThatIsLoggedIn");
     const determineStorage = playerStorage ? "main-menu" : "landing-page";
     setActiveComponent(determineStorage);
@@ -96,19 +90,23 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
 
   const postNewMessage = async (newMessage: Omit<playerMessages, "id">) => {
     const maxId = playerMessages.map((message) => message.id).slice(-1)[0];
-    console.log(maxId);
     const newPlayerMessage: playerMessages = {
       id: maxId! + 1,
       ...newMessage,
     };
-    console.log(newPlayerMessage.id);
     const addTheNewMessage = [...playerMessages, newPlayerMessage];
     await Requests.postNewMessage(newMessage)
       .then(() => {
         setPlayerMessages(addTheNewMessage);
+        toast.success("message posted", {
+          icon: "📜",
+          style: { background: "#333", color: "#fff" },
+        });
       })
-      .catch((error) => {
-        alert(error);
+      .catch(() => {
+        toast.error("message did not post, please try again", {
+          style: { background: "#333", color: "#fff" },
+        });
       });
   };
 
@@ -145,28 +143,29 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       ),
     );
     setPlayerInfo(playerInfo && { ...playerInfo, leftReview: true });
-
-    await Requests.patchPlayerReview(playerId)
-      .then((response) => {
+    try {
+      await Requests.patchPlayerReview(playerId).then(() => {
         playerInfo &&
           set<GamePlayers>("playerThatIsLoggedIn", {
             ...playerInfo,
             leftReview: true,
           });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (!response.ok) {
-          setAllPlayers(allPlayers);
-          //playerInfo &&
-          //set<GamePlayers>("playerThatIsLoggedIn", {
-          //...playerInfo,
-          //leftReview: false,
-          //});
-          alert(response);
-        } else return;
-      })
-      .catch((error) => {
-        console.log(error);
+        toast.success("Thank you for the  Review!", {
+          icon: "⭐",
+          style: { background: "#333", color: "#fff" },
+        });
       });
+    } catch (error) {
+      setAllPlayers(allPlayers);
+      playerInfo &&
+        set<GamePlayers>("playerThatIsLoggedIn", {
+          ...playerInfo,
+          leftReview: false,
+        });
+      toast.error("Failed to post review, try again please!", {
+        style: { background: "#333", color: "#fff" },
+      });
+    }
   };
 
   const patchPlayerDead = async (playerId: number) => {
@@ -176,24 +175,28 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
       ),
     );
     setPlayerInfo((playerInfo) => playerInfo && { ...playerInfo, souls: 0 });
-    await Requests.patchPlayerDead(playerId)
-      .then((response) => {
+
+    try {
+      await Requests.patchPlayerDead(playerId).then(() => {
         playerInfo &&
           set<GamePlayers>("playerThatIsLoggedIn", { ...playerInfo, souls: 0 });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (!response.ok) {
-          setAllPlayers(allPlayers);
-          //playerInfo && set<GamePlayers>("playerThatIsLoggedIn", playerInfo);
-          // playerInfo &&
-          // set<GamePlayers>("playerThatIsLoggedIn", {
-          // ...playerInfo,
-          //souls: playerInfo.souls,
-          //});
-        } else return;
-      })
-      .catch((error) => {
-        console.log(error);
+        toast.success("You died", {
+          icon: "☠️",
+          style: { background: "#333", color: "#fff" },
+        });
       });
+    } catch (err) {
+      setAllPlayers(allPlayers);
+      playerInfo && set<GamePlayers>("playerThatIsLoggedIn", playerInfo);
+      playerInfo &&
+        set<GamePlayers>("playerThatIsLoggedIn", {
+          ...playerInfo,
+          souls: playerInfo.souls,
+        });
+      toast.error("Failure to update data", {
+        style: { background: "#333", color: "#fff" },
+      });
+    }
   };
 
   const patchPlayerSurvived = async (
@@ -220,28 +223,35 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
           level: playerInfo && playerInfo?.level + levelUpBy,
         },
     );
-    await Requests.patchPlayerSurvived(playerProfile, levelUpBy, soulsEarned)
-      .then((response) => {
+    try {
+      await Requests.patchPlayerSurvived(
+        playerProfile,
+        levelUpBy,
+        soulsEarned,
+      ).then(() => {
         playerInfo &&
           set<GamePlayers>("playerThatIsLoggedIn", {
             ...playerInfo,
             level: playerInfo.level + levelUpBy,
             souls: playerInfo.souls + soulsEarned,
           });
-        // eslint-disable-next-line @typescript-eslint/no-unsafe-member-access
-        if (!response.ok) {
-          setAllPlayers(allPlayers);
-          //playerInfo &&
-          //set<GamePlayers>("playerThatIsLoggedIn", {
-          //...playerInfo,
-          //level: playerInfo.level,
-          //souls: playerInfo.souls,
-          // });
-        } else return;
-      })
-      .catch((error) => {
-        console.log(error);
+        toast.success("You Survived", {
+          icon: "⚔️",
+          style: { background: "#333", color: "#fff" },
+        });
       });
+    } catch (err) {
+      setAllPlayers(allPlayers);
+      playerInfo &&
+        set<GamePlayers>("playerThatIsLoggedIn", {
+          ...playerInfo,
+          level: playerInfo.level,
+          souls: playerInfo.souls,
+        });
+      toast.error("Failed to update data", {
+        style: { background: "#333", color: "#fff" },
+      });
+    }
   };
 
   return (

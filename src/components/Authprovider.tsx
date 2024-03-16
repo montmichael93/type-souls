@@ -9,7 +9,7 @@ import {
   type Dispatch,
   type SetStateAction,
 } from "react";
-import toast from "react-hot-toast/headless";
+import toast from "react-hot-toast";
 import { set } from "local-storage";
 
 interface PlayerCredentials {
@@ -22,8 +22,12 @@ type TAuthProvider = {
   playerInfo: GamePlayers | null;
   setPlayerInfo: Dispatch<SetStateAction<GamePlayers | null>>;
   setAllPlayers: Dispatch<SetStateAction<GamePlayers[]>>;
-  postNewPlayer: (player: Omit<GamePlayers, "id">) => Promise<void>;
-  logInAttempt: (credentials: PlayerCredentials) => Promise<void[]>;
+  postNewPlayer: (
+    player: Omit<GamePlayers, "id">,
+  ) => Promise<string | undefined>;
+  logInAttempt: (
+    credentials: PlayerCredentials,
+  ) => Promise<(string | void)[] | undefined>;
 };
 
 const AuthContext = createContext<TAuthProvider>({} as TAuthProvider);
@@ -42,7 +46,6 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
 
   const postNewPlayer = async (player: Omit<GamePlayers, "id">) => {
     const maxId = allPlayers.map((player) => player.id).slice(-1)[0];
-    console.log(maxId);
     const newId = maxId! + 1;
     const newPlayer: GamePlayers = {
       id: newId,
@@ -60,16 +63,21 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
       const addTheNewPlayer = [...allPlayers, newPlayer];
       await Requests.postNewPlayer(player)
         .then(() => {
-          setAllPlayers(addTheNewPlayer);
-          return Promise.resolve(toast.success("New player added!"));
+          const resolveAll = [
+            setAllPlayers(addTheNewPlayer),
+            toast.success("New player added!", {
+              style: { background: "#333", color: "#fff" },
+            }),
+          ];
+          return Promise.resolve(resolveAll);
         })
         .catch((error) => {
-          alert(error);
+          console.log(error);
         });
     } else {
-      const errorMessage = "username or email is already registered";
-      alert(new Error(errorMessage));
-      return Promise.reject(errorMessage);
+      return toast.error("Username or Email is Already Registered", {
+        style: { background: "#333", color: "#fff" },
+      });
     }
   };
 
@@ -87,19 +95,24 @@ export const AuthProvider = ({ children }: { children: ReactNode }) => {
           player.password === credentials.password,
       );
       if (playersFound.length === 0) {
-        throw Error("Email or password is incorrect");
+        return Promise.reject(
+          toast.error("Email or Password is Incorrect", {
+            style: { background: "#333", color: "#fff" },
+          }),
+        );
       }
-
       const resolveAll = [
         setPlayerInfo(playersFound[0]!),
         setAllPlayers(playerData),
         storeTheLoggedInPlayer(playersFound[0]!),
+        toast.success("Welcome Home Ashen One", {
+          icon: "❤️‍🔥",
+          style: { background: "#333", color: "#fff" },
+        }),
       ];
-
       return Promise.resolve(resolveAll);
     } catch (error) {
-      alert(error);
-      return Promise.reject(error);
+      console.log(error);
     }
   };
 

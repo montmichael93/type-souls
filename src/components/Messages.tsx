@@ -10,7 +10,7 @@ export const Messages = () => {
 
   return (
     <main
-      className={` flex min-h-screen flex-col items-center justify-center gap-2 border-r-2 bg-[url("/bonfire.jpg")] bg-cover bg-center px-24`}
+      className={` flex min-h-screen flex-col items-center justify-center gap-2 border-r-2 bg-bonfireThree bg-cover bg-center px-24`}
     >
       <div
         className=" place-self-end border-[0.1rem] border-solid border-[white] p-4 font-kode-mono text-red-900"
