@@ -99,6 +99,9 @@ export const MainMenu = () => {
             <span>{playerInfo?.name} </span>
             <span>level: {playerInfo?.level} </span>
             <span>souls: {playerInfo?.souls} </span>
+            <span>
+              Total Deaths: {playerInfo?.theAmountOfTimesThePlayerHasDied}
+            </span>
           </div>
           <div
             className="self-baseline border-[0.1rem] border-solid border-[white] p-4 text-center text-white"

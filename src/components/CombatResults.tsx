@@ -43,7 +43,7 @@ export const CombatResults = ({
               className=" place-self-end border-[0.1rem] border-solid border-[white] bg-black p-4 font-kode-mono text-red-900"
               onClick={() => {
                 playerInfo &&
-                  patchPlayerDead(playerInfo?.id)
+                  patchPlayerDead(playerInfo)
                     .then(() => {
                       setSelectedBoss(null);
                       setActiveComponent("main-menu");

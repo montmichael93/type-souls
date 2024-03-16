@@ -43,6 +43,7 @@ const players = range(amountToGenerate).map((id) => ({
   email: faker.internet.email(),
   password: faker.internet.password(),
   leftReview: false,
+  theAmountOfTimesThePlayerHasDied: Math.round(Math.random() * 100),
 }));
 
 const messages = range(amountToGenerate).map((id) => ({

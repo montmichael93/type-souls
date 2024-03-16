@@ -41,7 +41,7 @@ type TGameProvider = {
   postNewReview: (newReview: Omit<playerReviews, "id">) => Promise<void>;
   patchPlayerReview: (playerId: number) => Promise<void>;
   retrievePlayerReviews: () => Promise<playerReviews[]>;
-  patchPlayerDead: (playerId: number) => Promise<void>;
+  patchPlayerDead: (gamePlayer: GamePlayers) => Promise<void>;
   patchPlayerSurvived: (
     playerProfile: GamePlayers,
     levelUpBy: number,
@@ -168,18 +168,37 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
     }
   };
 
-  const patchPlayerDead = async (playerId: number) => {
+  const patchPlayerDead = async (gamePlayer: GamePlayers) => {
+    const NewPlayerDeathAmount =
+      gamePlayer.theAmountOfTimesThePlayerHasDied + 1;
     setAllPlayers((allPlayers) =>
       allPlayers.map((player) =>
-        player.id === playerId ? { ...player, souls: 0 } : player,
+        player === gamePlayer
+          ? {
+              ...player,
+              souls: 0,
+              theAmountOfTimesThePlayerHasDied: NewPlayerDeathAmount,
+            }
+          : player,
       ),
     );
-    setPlayerInfo((playerInfo) => playerInfo && { ...playerInfo, souls: 0 });
+    setPlayerInfo(
+      (playerInfo) =>
+        playerInfo && {
+          ...playerInfo,
+          souls: 0,
+          theAmountOfTimesThePlayerHasDied: NewPlayerDeathAmount,
+        },
+    );
 
     try {
-      await Requests.patchPlayerDead(playerId).then(() => {
+      await Requests.patchPlayerDead(gamePlayer).then(() => {
         playerInfo &&
-          set<GamePlayers>("playerThatIsLoggedIn", { ...playerInfo, souls: 0 });
+          set<GamePlayers>("playerThatIsLoggedIn", {
+            ...playerInfo,
+            souls: 0,
+            theAmountOfTimesThePlayerHasDied: NewPlayerDeathAmount,
+          });
         toast.success("You died", {
           icon: "☠️",
           style: { background: "#333", color: "#fff" },
@@ -192,6 +211,8 @@ export const GameProvider = ({ children }: { children: ReactNode }) => {
         set<GamePlayers>("playerThatIsLoggedIn", {
           ...playerInfo,
           souls: playerInfo.souls,
+          theAmountOfTimesThePlayerHasDied:
+            playerInfo.theAmountOfTimesThePlayerHasDied,
         });
       toast.error("Failure to update data", {
         style: { background: "#333", color: "#fff" },

@@ -32,6 +32,7 @@ const PlayerSchema = z.object({
   email: z.string(),
   password: z.string(),
   leftReview: z.boolean(),
+  theAmountOfTimesThePlayerHasDied: z.number(),
 });
 
 export type GamePlayers = z.infer<typeof PlayerSchema>;

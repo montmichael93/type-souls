@@ -84,6 +84,7 @@ export const LogInSignUp = () => {
                   email: emailInput,
                   password: passwordInput,
                   leftReview: false,
+                  theAmountOfTimesThePlayerHasDied: 0,
                 })
                   .then(() => {
                     setNameInput("");

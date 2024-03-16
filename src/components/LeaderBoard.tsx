@@ -49,6 +49,9 @@ export const LeaderBoard = () => {
                     <div className="bg-slate-800">{player.name}</div>
                     <div className="bg-slate-800">Level: {player.level}</div>
                     <div className="bg-slate-800">Souls: {player.souls}</div>
+                    <div className="bg-slate-800">
+                      Deaths: {player.theAmountOfTimesThePlayerHasDied}
+                    </div>
                   </div>
                 );
               })}

@@ -68,9 +68,13 @@ const patchPlayerReview = (playerId: number) => {
   }).then((response) => response.json());
 };
 
-const patchPlayerDead = (playerId: number) => {
-  return fetch(`${baseUrl}/players/${playerId}`, {
-    body: JSON.stringify({ souls: 0 }),
+const patchPlayerDead = (player: GamePlayers) => {
+  const newPlayerDeathAmount = player.theAmountOfTimesThePlayerHasDied + 1;
+  return fetch(`${baseUrl}/players/${player.id}`, {
+    body: JSON.stringify({
+      souls: 0,
+      theAmountOfTimesThePlayerHasDied: newPlayerDeathAmount,
+    }),
     method: "PATCH",
     headers: {
       "content-type": "application/json",
