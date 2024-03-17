@@ -1,12 +1,10 @@
 "use client";
 import Head from "next/head";
 import { AuthProvider } from "none/components/Authprovider";
-//import { GameBoard } from "../components/GameBoard";
+
 import { Game } from "none/components/Game";
 
 import { GameProvider } from "none/components/GameProvider";
-
-// Link from "next/link";
 
 export default function Home() {
   return (
@@ -25,11 +23,3 @@ export default function Home() {
     </>
   );
 }
-/*
-export async function getServerSideProps() {
-  // Return an empty object to disable SSR
-  return {
-    props: {},
-  };
-}
-*/

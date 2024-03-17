@@ -11,7 +11,6 @@ export const Letter = ({
 }) => {
   const className = (() => {
     if (status === "correct") {
-      //swordStrike();
       return "text-green-400";
     }
     if (status === "excess") {

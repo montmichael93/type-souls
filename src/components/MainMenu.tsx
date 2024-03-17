@@ -8,7 +8,6 @@ import toast from "react-hot-toast";
 export const MainMenu = () => {
   const { player } = useGame();
   const [isBonFireLit, setIsBonFireLit] = useState(false);
-
   const { playerInfo } = useAuth();
   const {
     activeComponent,
@@ -73,7 +72,6 @@ export const MainMenu = () => {
           <div
             className="w-40  self-end border-[0.1rem] border-solid border-[white] p-4 text-center font-kode-mono text-white"
             onClick={() => {
-              //setLeaderBoardSelected(true);
               setActiveComponent("leaderBoard");
             }}
           >

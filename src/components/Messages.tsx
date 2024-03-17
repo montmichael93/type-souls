@@ -15,7 +15,6 @@ export const Messages = () => {
       <div
         className=" place-self-end border-[0.1rem] border-solid border-[white] p-4 font-kode-mono text-red-900"
         onClick={() => {
-          //setMessagesSelected(false);
           setActiveComponent("main-menu");
         }}
       >
